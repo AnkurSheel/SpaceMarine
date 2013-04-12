@@ -1,0 +1,13 @@
+Obj/
+[Dd]ebug*/
+[Rr]elease*/
+*.user
+*.*sdf
+*.suo
+*.exp
+*.ilk
+ipch/
+log.*
+*.bak
+extern/SDL-1.2.15/docs/
+*.html
