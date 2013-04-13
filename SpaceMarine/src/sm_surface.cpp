@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "sm_surface.h"
+#include "SDL_image.h"
 
 using namespace Utilities;
 using namespace Base;
@@ -19,7 +20,7 @@ SMSurface::~SMSurface()
 // *****************************************************************************
 SDL_Surface * SMSurface::OnLoad(const Base::cString & FilePath)
 {
-	SDL_Surface * pSurfaceTemp = SDL_LoadBMP(FilePath.GetData());
+	SDL_Surface * pSurfaceTemp = IMG_Load(FilePath.GetData());
 	
 	if (pSurfaceTemp == NULL)
 	{
@@ -27,7 +28,7 @@ SDL_Surface * SMSurface::OnLoad(const Base::cString & FilePath)
 		return NULL;
 	}
 	
-	SDL_Surface * pSurfaceReturn = SDL_DisplayFormat(pSurfaceTemp);
+	SDL_Surface * pSurfaceReturn = SDL_DisplayFormatAlpha(pSurfaceTemp);
 	SDL_FreeSurface(pSurfaceTemp);
 	return pSurfaceReturn;
 }

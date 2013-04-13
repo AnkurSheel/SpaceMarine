@@ -7,12 +7,14 @@
 #define sm_game_h__
 
 #include "NonCopyable.h"
+#include "sm_event.h"
 
 union SDL_Event;
 struct SDL_Surface;
 
 class SMGame
 	: public Base::cNonCopyable
+	, public SMEvent
 {
 public:
 	SMGame();
@@ -21,8 +23,8 @@ public:
 	bool Initialize();
 	void Update();
 	void Render();
-	void OnEvent(const SDL_Event * const pEvent);
 	void Cleanup();
+	void VOnExit();
 
 private:
 	bool			m_Running;

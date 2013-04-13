@@ -60,7 +60,7 @@ bool SMGame::Initialize()
 		return false;
 	}
 
-	m_pTestSurface = SMSurface::OnLoad("myimage.bmp");
+	m_pTestSurface = SMSurface::OnLoad("hero_spritesheet.png");
 	if (m_pTestSurface == NULL)
 	{
 		return false;
@@ -80,17 +80,8 @@ void SMGame::Update()
 void SMGame::Render()
 {
 	SMSurface::OnDraw(m_pDisplaySurface, m_pTestSurface, 0, 0);
-	SMSurface::OnDraw(m_pDisplaySurface, m_pTestSurface, 200, 200, 0, 0, 50, 50);
+	SMSurface::OnDraw(m_pDisplaySurface, m_pTestSurface, 400, 400, 0, 0, 50, 50);
 	SDL_Flip(m_pDisplaySurface);
-}
-
-// *****************************************************************************
-void SMGame::OnEvent(const SDL_Event * const pEvent)
-{
-	if (pEvent->type == SDL_QUIT)
-	{
-		m_Running = false;
-	}
 }
 
 // *****************************************************************************
@@ -101,4 +92,10 @@ void SMGame::Cleanup()
 	SDL_FreeSurface(m_pDisplaySurface);
 	//Quit SDL
 	SDL_Quit();
+}
+
+// *****************************************************************************
+void SMGame::VOnExit()
+{
+	m_Running = false;
 }

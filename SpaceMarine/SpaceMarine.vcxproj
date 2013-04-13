@@ -12,11 +12,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\sm_event.cpp" />
     <ClCompile Include="src\sm_game.cpp" />
     <ClCompile Include="src\sm_surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\includes.h" />
+    <ClInclude Include="src\sm_event.h" />
     <ClInclude Include="src\sm_game.h" />
     <ClInclude Include="src\sm_surface.h" />
   </ItemGroup>
@@ -63,7 +65,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;Base_D.lib;Utilities_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL.lib;Base_D.lib;Utilities_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -79,7 +81,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;Base.lib;Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL.lib;Base.lib;Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
