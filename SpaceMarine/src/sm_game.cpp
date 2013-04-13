@@ -1,12 +1,15 @@
 #include "includes.h"
 #include "sm_game.h"
+#include "sm_surface.h"
 
 using namespace Utilities;
+using namespace Base;
 
 // *****************************************************************************
 SMGame::SMGame()
 	: m_Running(false)
-	, m_pSurface(NULL)
+	, m_pDisplaySurface(NULL)
+	, m_pTestSurface(NULL)
 {
 
 }
@@ -14,7 +17,6 @@ SMGame::SMGame()
 // *****************************************************************************
 SMGame::~SMGame()
 {
-	Cleanup();
 }
 
 // *****************************************************************************
@@ -43,21 +45,27 @@ bool SMGame::OnExecute()
 bool SMGame::Initialize()
 {
 	ILogger::Instance()->VInitialize();
-
+	ILogger::Instance()->VSetLogOptions(true, true, false, 2);
 	//Start SDL
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		Log_Write(ILogger::LT_ERROR, 1, "Could not Initialize SDL");
 		return false;
 	}
-	
-	m_pSurface = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	m_pDisplaySurface = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
-	if(m_pSurface == NULL)
+	if(m_pDisplaySurface == NULL)
 	{
 		Log_Write(ILogger::LT_ERROR, 1, "Could not Set the video mode");
 		return false;
 	}
+
+	m_pTestSurface = SMSurface::OnLoad("myimage.bmp");
+	if (m_pTestSurface == NULL)
+	{
+		return false;
+	}
+
 	m_Running = true;	
 	return true;
 }
@@ -71,7 +79,9 @@ void SMGame::Update()
 // *****************************************************************************
 void SMGame::Render()
 {
-
+	SMSurface::OnDraw(m_pDisplaySurface, m_pTestSurface, 0, 0);
+	SMSurface::OnDraw(m_pDisplaySurface, m_pTestSurface, 200, 200, 0, 0, 50, 50);
+	SDL_Flip(m_pDisplaySurface);
 }
 
 // *****************************************************************************
@@ -86,6 +96,9 @@ void SMGame::OnEvent(const SDL_Event * const pEvent)
 // *****************************************************************************
 void SMGame::Cleanup()
 {
+	SDL_FreeSurface(m_pTestSurface);
+
+	SDL_FreeSurface(m_pDisplaySurface);
 	//Quit SDL
 	SDL_Quit();
 }

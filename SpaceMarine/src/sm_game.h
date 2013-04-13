@@ -26,7 +26,8 @@ public:
 
 private:
 	bool			m_Running;
-	SDL_Surface *	m_pSurface;
+	SDL_Surface *	m_pDisplaySurface;
+	SDL_Surface *	m_pTestSurface;
 
 };
 
