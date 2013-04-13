@@ -10,6 +10,14 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\sm_game.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\includes.h" />
+    <ClInclude Include="src\sm_game.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{97E445CF-AF84-47B9-B55A-B7AD95EA7FCA}</ProjectGuid>
     <RootNamespace>SpaceMarine</RootNamespace>
@@ -37,14 +45,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\extern\SDL-1.2.15\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\extern\SDL-1.2.15\include;..\extern\Base\Includes;..\extern\Utilities\Includes;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>..\extern\SDL-1.2.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\extern\SDL-1.2.15\lib\x86;..\extern\Base\lib;..\extern\Utilities\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\extern\SDL-1.2.15\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\extern\SDL-1.2.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\extern\SDL-1.2.15\include;..\extern\Base\Includes;..\extern\Utilities\Includes;$(IncludePath)</IncludePath>
+    <LibraryPath>..\extern\SDL-1.2.15\lib\x86;..\extern\Base\lib;..\extern\Utilities\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -53,7 +61,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;Base.lib;Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -69,13 +77,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;Base.lib;Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
