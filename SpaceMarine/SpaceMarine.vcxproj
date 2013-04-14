@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sm_controls.cpp" />
+    <ClCompile Include="src\sm_directories.cpp" />
     <ClCompile Include="src\sm_entity.cpp" />
     <ClCompile Include="src\sm_entity_manager.cpp" />
     <ClCompile Include="src\sm_event.cpp" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <ClInclude Include="src\includes.h" />
     <ClInclude Include="src\sm_controls.h" />
+    <ClInclude Include="src\sm_directories.h" />
     <ClInclude Include="src\sm_entity.h" />
     <ClInclude Include="src\sm_entity_manager.h" />
     <ClInclude Include="src\sm_event.h" />
@@ -31,8 +33,18 @@
     <ClInclude Include="src\sm_surface.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\Options.ini" />
-    <None Include="..\Release\Options.ini" />
+    <None Include="..\Debug\Options.ini">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Media\directories.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\Release\Options.ini">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{97E445CF-AF84-47B9-B55A-B7AD95EA7FCA}</ProjectGuid>

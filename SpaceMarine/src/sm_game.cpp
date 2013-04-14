@@ -7,6 +7,7 @@
 #include "sm_controls.h"
 #include "sm_Player.h"
 #include "ParamLoaders.hxx"
+#include "sm_directories.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -17,6 +18,7 @@ SMGame::SMGame()
 	, m_pDisplaySurface(NULL)
 	, m_pGameTimer(NULL)
 	, m_pParamLoader(NULL)
+	, m_pBGSurface(NULL)
 {
 
 }
@@ -51,6 +53,11 @@ bool SMGame::OnExecute()
 // *****************************************************************************
 bool SMGame::Initialize()
 {
+	// make sure our memory leak checker is working
+#ifdef _DEBUG
+	int * p = DEBUG_NEW int;
+#endif // _DEBUG
+
 	ILogger::Instance()->VInitialize();
 
 	if(m_pParamLoader == NULL)
@@ -61,14 +68,6 @@ bool SMGame::Initialize()
 
 	SetLogOptions();
 
-	if(CreateDisplaySurface() == false)
-	{
-		return false;
-	}
-
-	SetCaption();
-
-
 	//Start SDL
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -76,13 +75,27 @@ bool SMGame::Initialize()
 		return false;
 	}
 
+	if(CreateDisplaySurface() == false)
+	{
+		return false;
+	}
+
+	SetCaption();
+
+	cString AssetsPath = m_pParamLoader->VGetParameterValueAsString("-AssetsPath", "");
+	SMDirectories::Directories.Initialize(AssetsPath, "directories.xml");
+	
 	m_pGameTimer = ITimer::CreateTimer();
 	m_pGameTimer->VStartTimer();
 
-	SMEntity * pEntity1 = DEBUG_NEW SMPlayer("Player");
-	pEntity1->VOnLoad("hero_spritesheet.png", 100, 100, 1);
-	
-	SMEntityManager::VRegisterEntity(pEntity1);
+	m_pBGSurface = SMSurface::OnLoad(SMDirectories::Directories.GetBackGrounds() + "dirt.png");
+
+	SetLevelSize();
+
+	m_pPlayer  = DEBUG_NEW SMPlayer("Player", m_LevelSize, m_ScreenSize);
+	m_pPlayer->VOnLoad(SMDirectories::Directories.GetPlayer() + "hero_spritesheet.png", 100, 100, 1);
+	m_pPlayer->SetPos(cVector2(320.0f, 240.0f));
+	SMEntityManager::VRegisterEntity(m_pPlayer);
 
 	m_Running = true;	
 	return true;
@@ -96,14 +109,23 @@ void SMGame::Update()
 		m_pGameTimer->VOnUpdate();
 		SMEntityManager::Update(m_pGameTimer->VGetDeltaTime());
 	}
-	
 }
 
 // *****************************************************************************
 void SMGame::Render()
 {
 	SDL_FillRect(m_pDisplaySurface, NULL, 0);
-
+	int XPos = 0;
+	int YPos = 0;
+	if (m_pPlayer != NULL)
+	{
+		XPos = m_pPlayer->GetCameraCenter().x;
+		YPos = m_pPlayer->GetCameraCenter().y;
+	}
+	if (m_pBGSurface != NULL)
+	{
+		SMSurface::OnDraw(m_pDisplaySurface, m_pBGSurface, 0, 0, XPos, YPos, m_ScreenSize.x, m_ScreenSize.y);
+	}
 	SMEntityManager::Render(m_pDisplaySurface);
 	SDL_Flip(m_pDisplaySurface);
 }
@@ -112,10 +134,20 @@ void SMGame::Render()
 void SMGame::Cleanup()
 {
 	SafeDelete(&m_pGameTimer);
+	SafeDelete(&m_pParamLoader);
 	SMEntityManager::Cleanup();
 	
-	SDL_FreeSurface(m_pDisplaySurface);
-	m_pDisplaySurface = NULL;
+	if (m_pBGSurface != NULL)
+	{
+		SDL_FreeSurface(m_pBGSurface);
+		m_pBGSurface = NULL;
+	}
+
+	if (m_pDisplaySurface != NULL)
+	{
+		SDL_FreeSurface(m_pDisplaySurface);
+		m_pDisplaySurface = NULL;
+	}
 
 	//Quit SDL
 	SDL_Quit();
@@ -153,9 +185,9 @@ void SMGame::SetLogOptions()
 // *****************************************************************************
 bool SMGame::CreateDisplaySurface()
 {
-	int Width = m_pParamLoader->VGetParameterValueAsInt("-WindowWidth", 800);
-	int Height = m_pParamLoader->VGetParameterValueAsInt("-WindowHeight", 600);
-	m_pDisplaySurface = SDL_SetVideoMode(Width, Height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	m_ScreenSize.x = m_pParamLoader->VGetParameterValueAsFloat("-WindowWidth", 800);
+	m_ScreenSize.y = m_pParamLoader->VGetParameterValueAsFloat("-WindowHeight", 600);
+	m_pDisplaySurface = SDL_SetVideoMode(m_ScreenSize.x, m_ScreenSize.y, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	if(m_pDisplaySurface == NULL)
 	{
@@ -170,4 +202,16 @@ void SMGame::SetCaption()
 {
 	cString strName = m_pParamLoader->VGetParameterValueAsString("-title", "Game");
 	SDL_WM_SetCaption(strName.GetData(), NULL);
+}
+
+// *****************************************************************************
+void SMGame::SetLevelSize()
+{
+	m_LevelSize = m_ScreenSize;
+	if (m_pBGSurface != NULL)
+	{
+		m_LevelSize.x = m_pBGSurface->w;
+		m_LevelSize.y = m_pBGSurface->h;
+		Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Level Size is (%d, %d) ", static_cast<int>(m_LevelSize.x), static_cast<int>(m_LevelSize.y)));
+	}
 }

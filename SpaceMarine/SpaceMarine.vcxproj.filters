@@ -45,6 +45,9 @@
     <ClCompile Include="src\sm_player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sm_directories.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sm_game.h">
@@ -71,6 +74,9 @@
     <ClInclude Include="src\sm_Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sm_directories.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\Options.ini">
@@ -78,6 +84,9 @@
     </None>
     <None Include="..\Release\Options.ini">
       <Filter>Resource Files\Release</Filter>
+    </None>
+    <None Include="..\Media\directories.xml">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

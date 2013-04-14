@@ -47,6 +47,9 @@ void SMEntity::SetID(const int iID)
 bool SMEntity::VOnLoad(const Base::cString & FilePath, const int Width,
 	const int Height, const int MaxFrames)
 {
+	m_Size.x = Width;
+	m_Size.y = Height;
+
 	m_pSurface = SMSurface::OnLoad(FilePath);
 	if (m_pSurface == NULL)
 	{

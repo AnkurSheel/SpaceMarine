@@ -14,9 +14,6 @@ class SMEntity;
 class SMEntityManager
 	: public Base::cNonCopyable
 {
-private:
-	typedef std::map<int, SMEntity * const > EntityMap;
-
 public:
 	static void VRegisterEntity(SMEntity * const pEntity);
 	static void UnRegisterEntity(SMEntity * const pEntity);
@@ -25,6 +22,9 @@ public:
 	static void Update(const float DeltaTime);
 	static void Render(SDL_Surface * pDisplaySurface);
 	static void Cleanup();
+
+private:
+	typedef std::map<int, SMEntity * const > EntityMap;
 
 private:
 	SMEntityManager();

@@ -23,10 +23,13 @@ public:
 	virtual void VUpdate(const float DeltaTime);
 	virtual void VRender(SDL_Surface * pDisplaySurface);
 	virtual void VCleanup();
+	Base::cVector2 GetPos() const { return m_Pos; }
+	void SetPos(Base::cVector2 val) { m_Pos = val; }
 
 protected:
 	Base::cString	m_Name;
 	Base::cVector2	m_Pos;
+	Base::cVector2	m_Size;
 	SDL_Surface *	m_pSurface;
 
 private:
