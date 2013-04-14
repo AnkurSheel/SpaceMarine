@@ -30,6 +30,7 @@ SDL_Surface * SMSurface::OnLoad(const Base::cString & FilePath)
 	
 	SDL_Surface * pSurfaceReturn = SDL_DisplayFormatAlpha(pSurfaceTemp);
 	SDL_FreeSurface(pSurfaceTemp);
+	pSurfaceTemp = NULL;
 	return pSurfaceReturn;
 }
 
@@ -73,7 +74,6 @@ bool SMSurface::InternalDraw(SDL_Surface * pDestinationSurface, SDL_Rect * pSrcR
 	}
 	if (pSourceSurface == NULL)
 	{
-		Log_Write(ILogger::LT_WARNING, 2 , "Source Surface is Null");
 		return false;
 	}
 	

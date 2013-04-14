@@ -9,8 +9,15 @@
 #include "NonCopyable.h"
 #include "sm_event.h"
 
+namespace Utilities
+{
+	class ITimer;
+	class IParamLoader;
+}
+
 union SDL_Event;
 struct SDL_Surface;
+class SMEntityManager;
 
 class SMGame
 	: public Base::cNonCopyable
@@ -25,12 +32,19 @@ public:
 	void Render();
 	void Cleanup();
 	void VOnExit();
+	virtual void VOnKeyDown(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
+	virtual void VOnKeyUp(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
 
 private:
-	bool			m_Running;
-	SDL_Surface *	m_pDisplaySurface;
-	SDL_Surface *	m_pTestSurface;
+	void SetLogOptions();
+	bool CreateDisplaySurface();
+	void SetCaption();
 
+private:
+	bool						m_Running;
+	SDL_Surface *				m_pDisplaySurface;
+	Utilities::ITimer *			m_pGameTimer;
+	Utilities::IParamLoader *	m_pParamLoader;
 };
 
 #endif // sm_game_h__

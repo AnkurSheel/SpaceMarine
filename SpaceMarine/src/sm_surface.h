@@ -14,10 +14,6 @@ class SMSurface
 	: public Base::cNonCopyable
 {
 public:
-	SMSurface();
-	~SMSurface();
-
-public:
 	static SDL_Surface * OnLoad(const Base::cString & FilePath);
 	static bool OnDraw(SDL_Surface * pDestinationSurface,
 		SDL_Surface * pSourceSurface, const int XDestPos, const int YDestPos);
@@ -26,6 +22,8 @@ public:
 		const int XSrcPos, int YSrcPos, const int Width, const int Height);
 
 private:
+	SMSurface();
+	~SMSurface();
 	static bool InternalDraw(SDL_Surface * pDestinationSurface, SDL_Rect * pSrcR,
 		SDL_Surface * pSourceSurface, SDL_Rect * pDestR);
 
