@@ -8,6 +8,7 @@
 #include "sm_Player.h"
 #include "ParamLoaders.hxx"
 #include "sm_directories.h"
+#include "sm_level.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -88,14 +89,11 @@ bool SMGame::Initialize()
 	m_pGameTimer = ITimer::CreateTimer();
 	m_pGameTimer->VStartTimer();
 
-	m_pBGSurface = SMSurface::OnLoad(SMDirectories::Directories.GetBackGrounds() + "dirt.png");
+	SMLevel::Level.Initialize("level1.xml");
 
-	SetLevelSize();
+	LoadBackGround();
 
-	m_pPlayer  = DEBUG_NEW SMPlayer("Player", m_LevelSize, m_ScreenSize);
-	m_pPlayer->VOnLoad(SMDirectories::Directories.GetPlayer() + "hero_spritesheet.png", 100, 100, 1);
-	m_pPlayer->SetPos(cVector2(320.0f, 240.0f));
-	SMEntityManager::VRegisterEntity(m_pPlayer);
+	CreatePlayer();
 
 	m_Running = true;	
 	return true;
@@ -119,8 +117,8 @@ void SMGame::Render()
 	int YPos = 0;
 	if (m_pPlayer != NULL)
 	{
-		XPos = m_pPlayer->GetCameraCenter().x;
-		YPos = m_pPlayer->GetCameraCenter().y;
+		XPos = m_pPlayer->GetPositionInLevel().x;
+		YPos = m_pPlayer->GetPositionInLevel().y;
 	}
 	if (m_pBGSurface != NULL)
 	{
@@ -205,8 +203,10 @@ void SMGame::SetCaption()
 }
 
 // *****************************************************************************
-void SMGame::SetLevelSize()
+void SMGame::LoadBackGround()
 {
+	m_pBGSurface = SMSurface::OnLoad(SMDirectories::Directories.GetBackGrounds() + SMLevel::Level.GetBackground());
+
 	m_LevelSize = m_ScreenSize;
 	if (m_pBGSurface != NULL)
 	{
@@ -214,4 +214,13 @@ void SMGame::SetLevelSize()
 		m_LevelSize.y = m_pBGSurface->h;
 		Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Level Size is (%d, %d) ", static_cast<int>(m_LevelSize.x), static_cast<int>(m_LevelSize.y)));
 	}
+}
+
+// *****************************************************************************
+void SMGame::CreatePlayer()
+{
+	m_pPlayer  = DEBUG_NEW SMPlayer("Player", m_LevelSize, m_ScreenSize);
+	m_pPlayer->VOnLoad(SMDirectories::Directories.GetPlayer() + "hero_spritesheet.png", 100, 100, 1);
+	m_pPlayer->SetPos(cVector2(320.0f, 240.0f));
+	SMEntityManager::VRegisterEntity(m_pPlayer);
 }

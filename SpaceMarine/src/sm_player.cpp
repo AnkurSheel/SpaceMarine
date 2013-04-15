@@ -42,13 +42,13 @@ void SMPlayer::VUpdate(const float DeltaTime)
 	Clamp<float>(m_Pos.x, 0, (m_LevelSize.x - m_Size.x));
 	Clamp<float>(m_Pos.y, 0, (m_LevelSize.y - m_Size.y));
 	
-	m_CameraCenter = m_Pos + (m_Size * 0.5f) - (m_ScreenSize * 0.5f);
-	Clamp<float>(m_CameraCenter.x, 0, (m_LevelSize.x - m_ScreenSize.x));
-	Clamp<float>(m_CameraCenter.y, 0, (m_LevelSize.y - m_ScreenSize.y));
+	m_PositionInLevel = m_Pos + (m_Size * 0.5f) - (m_ScreenSize * 0.5f);
+	Clamp<float>(m_PositionInLevel.x, 0, (m_LevelSize.x - m_ScreenSize.x));
+	Clamp<float>(m_PositionInLevel.y, 0, (m_LevelSize.y - m_ScreenSize.y));
 }
 
 // *****************************************************************************
 void SMPlayer::VRender(SDL_Surface * pDisplaySurface)
 {
-	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Pos.x - m_CameraCenter.x), static_cast<int>(m_Pos.y - m_CameraCenter.y), 0, 0, 64, 100);
+	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Pos.x - m_PositionInLevel.x), static_cast<int>(m_Pos.y - m_PositionInLevel.y), 0, 0, 64, 100);
 }

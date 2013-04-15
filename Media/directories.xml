@@ -1,4 +1,5 @@
 <Directories>
 	<BackgroundDirectory>BackGrounds\</BackgroundDirectory>
   <PlayerDirectory>Player\</PlayerDirectory>
+  <LevelDirectory>Levels\</LevelDirectory>
 </Directories>

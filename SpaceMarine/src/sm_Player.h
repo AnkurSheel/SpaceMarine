@@ -14,10 +14,10 @@ public:
 	~SMPlayer();
 	void VUpdate(const float DeltaTime);
 	void VRender(SDL_Surface * pDisplaySurface);
-	Base::cVector2 GetCameraCenter() const { return m_CameraCenter; }
+	Base::cVector2 GetPositionInLevel() const { return m_PositionInLevel; }
 
 private:
 	Base::cVector2	m_LevelSize;
 	Base::cVector2	m_ScreenSize;
-	Base::cVector2	m_CameraCenter;
+	Base::cVector2	m_PositionInLevel;
 };

@@ -41,7 +41,8 @@ private:
 	void SetLogOptions();
 	bool CreateDisplaySurface();
 	void SetCaption();
-	void SetLevelSize();
+	void LoadBackGround();
+	void CreatePlayer();
 
 private:
 	bool						m_Running;

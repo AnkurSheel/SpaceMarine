@@ -26,18 +26,20 @@ bool SMDirectories::Initialize(const Base::cString & AssetsPath,
 	m_AssetsPath = AssetsPath;
 	IXMLFileIO * pXMLFile = IXMLFileIO::CreateXMLFile();
 
-	if(pXMLFile != NULL)
+	if(pXMLFile == NULL)
 	{
-		if(pXMLFile->VLoad(AssetsPath + DirectoriesFileName))
-		{
-			m_BackGrounds = m_AssetsPath + pXMLFile->VGetNodeValue("BackgroundDirectory");
-			m_Player = m_AssetsPath + pXMLFile->VGetNodeValue("PlayerDirectory");
-		}
-		else
-		{
-			SafeDelete(&pXMLFile);
-			return false;
-		}
+		return false;
+	}
+	if(pXMLFile->VLoad(AssetsPath + DirectoriesFileName))
+	{
+		m_BackGrounds = m_AssetsPath + pXMLFile->VGetNodeValue("BackgroundDirectory");
+		m_Player = m_AssetsPath + pXMLFile->VGetNodeValue("PlayerDirectory");
+		m_Levels = m_AssetsPath + pXMLFile->VGetNodeValue("LevelDirectory");
+	}
+	else
+	{
+		SafeDelete(&pXMLFile);
+		return false;
 	}
 	SafeDelete(&pXMLFile);
 	return true;
