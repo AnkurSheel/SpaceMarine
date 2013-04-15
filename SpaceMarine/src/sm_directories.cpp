@@ -32,9 +32,10 @@ bool SMDirectories::Initialize(const Base::cString & AssetsPath,
 	}
 	if(pXMLFile->VLoad(AssetsPath + DirectoriesFileName))
 	{
-		m_BackGrounds = m_AssetsPath + pXMLFile->VGetNodeValue("BackgroundDirectory");
-		m_Player = m_AssetsPath + pXMLFile->VGetNodeValue("PlayerDirectory");
-		m_Levels = m_AssetsPath + pXMLFile->VGetNodeValue("LevelDirectory");
+		m_BackGroundSprites = m_AssetsPath + pXMLFile->VGetNodeValue("BackgroundSprites");
+		m_PlayerSprites = m_AssetsPath + pXMLFile->VGetNodeValue("PlayerSprites");
+		m_ObjectSprites = m_AssetsPath + pXMLFile->VGetNodeValue("ObjectsSprites");
+		m_Levels = m_AssetsPath + pXMLFile->VGetNodeValue("Levels");
 	}
 	else
 	{

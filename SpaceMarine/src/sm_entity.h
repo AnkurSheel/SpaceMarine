@@ -18,6 +18,7 @@ public:
 	virtual ~SMEntity();
 	int GetID() const { return m_ID; }
 	Base::cString GetName() const { return m_Name; }
+	virtual bool VOnLoad(const Base::cString & FilePath);
 	virtual bool VOnLoad(const Base::cString & FilePath, const int Width,
 		const int Height, const int MaxFrames);
 	virtual void VUpdate(const float DeltaTime);
@@ -25,6 +26,7 @@ public:
 	virtual void VCleanup();
 	Base::cVector2 GetPos() const { return m_Pos; }
 	void SetPos(Base::cVector2 val) { m_Pos = val; }
+	Base::cVector2 GetSize() const { return m_Size; }
 
 protected:
 	Base::cString	m_Name;

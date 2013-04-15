@@ -1,1 +1,4 @@
-Hero Spritesheel : http://opengameart.org/content/2d-hero
+Hero Spritesheet : http://opengameart.org/content/2d-hero
+dirt : http://opengameart.org/node/9021
+rock : http://opengameart.org/content/pastel-resources-tiles-96x96
+woods : http://opengameart.org/content/pastel-resources-tiles-96x96

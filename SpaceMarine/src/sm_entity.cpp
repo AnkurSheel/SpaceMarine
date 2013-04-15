@@ -1,6 +1,7 @@
 #include "includes.h"
 #include "sm_entity.h"
 #include "sm_surface.h"
+#include "sm_game.h"
 
 using namespace Utilities;
 using namespace Base;
@@ -44,6 +45,20 @@ void SMEntity::SetID(const int iID)
 }
 
 // *****************************************************************************
+bool SMEntity::VOnLoad(const Base::cString & FilePath)
+{
+	m_pSurface = SMSurface::OnLoad(FilePath);
+	if (m_pSurface == NULL)
+	{
+		return false;
+	}
+	m_Size.x = static_cast<float>(m_pSurface->w);
+	m_Size.y = static_cast<float>(m_pSurface->h);
+
+	return true;
+}
+
+// *****************************************************************************
 bool SMEntity::VOnLoad(const Base::cString & FilePath, const int Width,
 	const int Height, const int MaxFrames)
 {
@@ -66,7 +81,13 @@ void SMEntity::VUpdate(const float DeltaTime)
 // *****************************************************************************
 void SMEntity::VRender(SDL_Surface * pDisplaySurface)
 {
-	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Pos.x), static_cast<int>(m_Pos.y));
+	cVector2 Pos = m_Pos - SMGame::GetCameraPosition();
+	if (Pos.x < -200 || Pos.x > SMGame::GetScreenSize().x 
+		|| Pos.y < -200 || Pos.y > SMGame::GetScreenSize().y)
+	{
+		return;
+	}
+	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(Pos.x), static_cast<int>(Pos.y));
 }
 
 // *****************************************************************************

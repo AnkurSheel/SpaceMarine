@@ -1,5 +1,6 @@
 <Directories>
-	<BackgroundDirectory>BackGrounds\</BackgroundDirectory>
-  <PlayerDirectory>Player\</PlayerDirectory>
-  <LevelDirectory>Levels\</LevelDirectory>
+	<BackgroundSprites>Sprites\BackGrounds\</BackgroundSprites>
+  <PlayerSprites>Sprites\Player\</PlayerSprites>
+  <ObjectsSprites>Sprites\Objects\</ObjectsSprites>
+  <Levels>Levels\</Levels>
 </Directories>
