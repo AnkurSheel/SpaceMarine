@@ -1,8 +1,26 @@
 <Levels>
   <Level BackGround ="dirt.png" Width ="1000" Height = "1000"></Level>
   <Player SpawnPointX ="320" SpawnPointY ="320" ></Player>
-  <StaticObjects Size ="20">
-    <StaticObject ID ="1" Type ="Rock" RelativeWeight ="10"></StaticObject>
-    <StaticObject ID ="2" Type ="Building" RelativeWeight ="10"></StaticObject>
+  <StaticObjects>
+    <StaticObject id ="1" Type ="Rock" XPos ="50" YPos ="50"></StaticObject>
+    <StaticObject id ="2" Type ="Rock" XPos ="100" YPos ="150"></StaticObject>
+    <StaticObject id ="3" Type ="Rock" XPos ="150" YPos ="300"></StaticObject>
+    <StaticObject id ="4" Type ="Rock" XPos ="200" YPos ="450"></StaticObject>
+    <StaticObject id ="5" Type ="Rock" XPos ="250" YPos ="600"></StaticObject>
+    <StaticObject id ="6" Type ="Rock" XPos ="300" YPos ="750"></StaticObject>
+    <StaticObject id ="7" Type ="Rock" XPos ="350" YPos ="900"></StaticObject>
+    <StaticObject id ="8" Type ="Rock" XPos ="400" YPos ="50"></StaticObject>
+    <StaticObject id ="9" Type ="Rock" XPos ="500" YPos ="150"></StaticObject>
+    <StaticObject id ="10" Type ="Rock" XPos ="600" YPos ="300"></StaticObject>
+    <StaticObject id ="11" Type ="Building" XPos ="700" YPos ="450"></StaticObject>
+    <StaticObject id ="12" Type ="Building" XPos ="800" YPos ="600"></StaticObject>
+    <StaticObject id ="13" Type ="Building" XPos ="900" YPos ="750"></StaticObject>
+    <StaticObject id ="14" Type ="Building" XPos ="100" YPos ="900"></StaticObject>
+    <StaticObject id ="15" Type ="Building" XPos ="200" YPos ="50"></StaticObject>
+    <StaticObject id ="16" Type ="Building" XPos ="300" YPos ="200"></StaticObject>
+    <StaticObject id ="17" Type ="Building" XPos ="400" YPos ="350"></StaticObject>
+    <StaticObject id ="18" Type ="Building" XPos ="500" YPos ="500"></StaticObject>
+    <StaticObject id ="19" Type ="Building" XPos ="600" YPos ="650"></StaticObject>
+    <StaticObject id ="20" Type ="Building" XPos ="700" YPos ="800"></StaticObject>
   </StaticObjects>
 </Levels>

@@ -47,7 +47,6 @@ private:
 private:
 	bool						m_Running;
 	Base::cVector2				m_ScreenSize;
-	Base::cVector2				m_LevelSize;
 	SDL_Surface *				m_pDisplaySurface;
 	SDL_Surface *				m_pBGSurface;
 	Utilities::ITimer *			m_pGameTimer;

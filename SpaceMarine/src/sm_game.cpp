@@ -117,12 +117,12 @@ void SMGame::Render()
 	int YPos = 0;
 	if (m_pPlayer != NULL)
 	{
-		XPos = m_pPlayer->GetPositionInLevel().x;
-		YPos = m_pPlayer->GetPositionInLevel().y;
+		XPos = static_cast<int>(m_pPlayer->GetPositionInLevel().x);
+		YPos = static_cast<int>(m_pPlayer->GetPositionInLevel().y);
 	}
 	if (m_pBGSurface != NULL)
 	{
-		SMSurface::OnDraw(m_pDisplaySurface, m_pBGSurface, 0, 0, XPos, YPos, m_ScreenSize.x, m_ScreenSize.y);
+		SMSurface::OnDraw(m_pDisplaySurface, m_pBGSurface, 0, 0, XPos, YPos, static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y));
 	}
 	SMEntityManager::Render(m_pDisplaySurface);
 	SDL_Flip(m_pDisplaySurface);
@@ -185,7 +185,7 @@ bool SMGame::CreateDisplaySurface()
 {
 	m_ScreenSize.x = m_pParamLoader->VGetParameterValueAsFloat("-WindowWidth", 800);
 	m_ScreenSize.y = m_pParamLoader->VGetParameterValueAsFloat("-WindowHeight", 600);
-	m_pDisplaySurface = SDL_SetVideoMode(m_ScreenSize.x, m_ScreenSize.y, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	m_pDisplaySurface = SDL_SetVideoMode(static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	if(m_pDisplaySurface == NULL)
 	{
@@ -206,21 +206,13 @@ void SMGame::SetCaption()
 void SMGame::LoadBackGround()
 {
 	m_pBGSurface = SMSurface::OnLoad(SMDirectories::Directories.GetBackGrounds() + SMLevel::Level.GetBackground());
-
-	m_LevelSize = m_ScreenSize;
-	if (m_pBGSurface != NULL)
-	{
-		m_LevelSize.x = m_pBGSurface->w;
-		m_LevelSize.y = m_pBGSurface->h;
-		Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Level Size is (%d, %d) ", static_cast<int>(m_LevelSize.x), static_cast<int>(m_LevelSize.y)));
-	}
 }
 
 // *****************************************************************************
 void SMGame::CreatePlayer()
 {
-	m_pPlayer  = DEBUG_NEW SMPlayer("Player", m_LevelSize, m_ScreenSize);
+	m_pPlayer  = DEBUG_NEW SMPlayer("Player", m_ScreenSize);
 	m_pPlayer->VOnLoad(SMDirectories::Directories.GetPlayer() + "hero_spritesheet.png", 100, 100, 1);
-	m_pPlayer->SetPos(cVector2(320.0f, 240.0f));
+	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 	SMEntityManager::VRegisterEntity(m_pPlayer);
 }
