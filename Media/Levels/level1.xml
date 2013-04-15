@@ -1,0 +1,8 @@
+<Levels>
+  <Level BackGround ="dirt.png" Width ="1000" Height = "1000"></Level>
+  <Player SpawnPointX ="320" SpawnPointY ="320" ></Player>
+  <StaticObjects Size ="20">
+    <StaticObject ID ="1" Type ="Rock" RelativeWeight ="10"></StaticObject>
+    <StaticObject ID ="2" Type ="Building" RelativeWeight ="10"></StaticObject>
+  </StaticObjects>
+</Levels>
