@@ -9,12 +9,13 @@
 #include "ParamLoaders.hxx"
 #include "sm_directories.h"
 #include "sm_level.h"
+#include "sm_camera.h"
 
 using namespace Base;
 using namespace Utilities;
 
 cVector2 SMGame::m_ScreenSize;
-cVector2 SMGame::m_CameraPosition;
+SMCamera * SMGame::m_pCamera = NULL;
 
 // *****************************************************************************
 SMGame::SMGame()
@@ -98,6 +99,9 @@ bool SMGame::Initialize()
 
 	CreatePlayer();
 
+	m_pCamera = DEBUG_NEW SMCamera();
+	m_pCamera->SetTarget(m_pPlayer);
+	
 	m_Running = true;	
 	return true;
 }
@@ -110,11 +114,9 @@ void SMGame::Update()
 		m_pGameTimer->VOnUpdate();
 		SMEntityManager::Update(m_pGameTimer->VGetDeltaTime());
 	}
-	if (m_pPlayer != NULL)
+	if (m_pCamera)
 	{
-		m_CameraPosition = m_pPlayer->GetPos() + (m_pPlayer->GetSize() * 0.5f) - (m_ScreenSize * 0.5f);
-		Clamp<float>(m_CameraPosition.x, 0, (SMLevel::Level.GetLevelSize().x - m_ScreenSize.x));
-		Clamp<float>(m_CameraPosition.y, 0, (SMLevel::Level.GetLevelSize().y - m_ScreenSize.y));
+		m_pCamera->Update();
 	}
 }
 
@@ -124,7 +126,7 @@ void SMGame::Render()
 	SDL_FillRect(m_pDisplaySurface, NULL, 0);
 	if (m_pBGSurface != NULL)
 	{
-		SMSurface::OnDraw(m_pDisplaySurface, m_pBGSurface, 0, 0, static_cast<int>(m_CameraPosition.x), static_cast<int>(m_CameraPosition.y), static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y));
+		SMSurface::OnDraw(m_pDisplaySurface, m_pBGSurface, 0, 0, static_cast<int>(m_pCamera->GetPos().x), static_cast<int>(m_pCamera->GetPos().y), static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y));
 	}
 	SMEntityManager::Render(m_pDisplaySurface);
 	SDL_Flip(m_pDisplaySurface);
@@ -135,6 +137,8 @@ void SMGame::Cleanup()
 {
 	SafeDelete(&m_pGameTimer);
 	SafeDelete(&m_pParamLoader);
+	SafeDelete(&m_pCamera);
+
 	SMEntityManager::Cleanup();
 	
 	if (m_pBGSurface != NULL)
@@ -217,4 +221,14 @@ void SMGame::CreatePlayer()
 	m_pPlayer->VOnLoad(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 100, 100, 1);
 	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 	SMEntityManager::VRegisterEntity(m_pPlayer);
+}
+
+// *****************************************************************************
+Base::cVector2 SMGame::GetCameraPosition()
+{
+	if (m_pCamera != NULL)
+	{
+		return m_pCamera->GetPos();
+	}
+	return cVector2::Zero();
 }

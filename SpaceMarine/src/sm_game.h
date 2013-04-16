@@ -19,7 +19,8 @@ namespace Utilities
 union SDL_Event;
 struct SDL_Surface;
 class SMEntityManager;
-class SMPlayer;
+class SMEntity;
+class SMCamera;
 
 class SMGame
 	: public Base::cNonCopyable
@@ -37,7 +38,7 @@ public:
 	virtual void VOnKeyDown(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
 	virtual void VOnKeyUp(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
 	static Base::cVector2 GetScreenSize() { return m_ScreenSize; }
-	static Base::cVector2 GetCameraPosition() { return m_CameraPosition; }
+	static Base::cVector2 GetCameraPosition();
 
 private:
 	void SetLogOptions();
@@ -52,9 +53,9 @@ private:
 	SDL_Surface *				m_pBGSurface;
 	Utilities::ITimer *			m_pGameTimer;
 	Utilities::IParamLoader *	m_pParamLoader;
-	SMPlayer *					m_pPlayer;
+	SMEntity *					m_pPlayer;
 	static Base::cVector2		m_ScreenSize;
-	static Base::cVector2		m_CameraPosition;
+	static SMCamera *			m_pCamera;
 };
 
 #endif // sm_game_h__

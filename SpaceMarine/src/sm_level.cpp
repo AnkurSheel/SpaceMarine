@@ -4,6 +4,7 @@
 #include <XMLFileIO.hxx>
 #include "sm_entity.h"
 #include "sm_entity_manager.h"
+#include "sm_static_object.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -68,10 +69,9 @@ void SMLevel::LoadStaticObjects(IXMLFileIO * const pXMLFile)
 		int XPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "XPos");
 		int YPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "YPos");
 
-		SMEntity * pEntity = DEBUG_NEW SMEntity(strStaticObjectID);
+		SMEntity * pEntity = DEBUG_NEW SMStaticObject(strStaticObjectID);
 		pEntity->VOnLoad(SMDirectories::Directories.GetObjectSprites() + Type + ".png");
 		pEntity->SetPos(cVector2(XPos, YPos));
 		SMEntityManager::VRegisterEntity(pEntity);
-		Log_Write(ILogger::LT_COMMENT, 2, "Creating " + Type + cString(100, " at (%d, %d)", XPos, YPos));
 	}
 }
