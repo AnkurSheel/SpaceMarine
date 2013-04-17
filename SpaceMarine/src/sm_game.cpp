@@ -5,7 +5,6 @@
 #include "Timer.hxx"
 #include "sm_entity.h"
 #include "sm_controls.h"
-#include "sm_Player.h"
 #include "ParamLoaders.hxx"
 #include "sm_directories.h"
 #include "sm_level.h"
@@ -112,7 +111,7 @@ void SMGame::Update()
 	if (m_pGameTimer)
 	{
 		m_pGameTimer->VOnUpdate();
-		SMEntityManager::Update(m_pGameTimer->VGetDeltaTime());
+		SMEntityManager::EntityManager.Update(m_pGameTimer->VGetDeltaTime());
 	}
 	if (m_pCamera)
 	{
@@ -128,7 +127,7 @@ void SMGame::Render()
 	{
 		SMSurface::OnDraw(m_pDisplaySurface, m_pBGSurface, 0, 0, static_cast<int>(m_pCamera->GetPos().x), static_cast<int>(m_pCamera->GetPos().y), static_cast<int>(m_ScreenSize.x), static_cast<int>(m_ScreenSize.y));
 	}
-	SMEntityManager::Render(m_pDisplaySurface);
+	SMEntityManager::EntityManager.Render(m_pDisplaySurface);
 	SDL_Flip(m_pDisplaySurface);
 }
 
@@ -139,7 +138,7 @@ void SMGame::Cleanup()
 	SafeDelete(&m_pParamLoader);
 	SafeDelete(&m_pCamera);
 
-	SMEntityManager::Cleanup();
+	SMEntityManager::EntityManager.Cleanup();
 	SafeFreeSurface(&m_pBGSurface);
 
 	SafeFreeSurface(&m_pDisplaySurface);
@@ -208,10 +207,9 @@ void SMGame::LoadBackGround()
 // *****************************************************************************
 void SMGame::CreatePlayer()
 {
-	m_pPlayer  = DEBUG_NEW SMPlayer("Player");
+	m_pPlayer = SMEntityManager::EntityManager.RegisterEntity("SMPlayer", "Player");
 	m_pPlayer->VInitialize(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 55, 64, 1, true);
 	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
-	SMEntityManager::VRegisterEntity(m_pPlayer);
 }
 
 // *****************************************************************************

@@ -17,6 +17,7 @@
     <ClCompile Include="src\sm_controls.cpp" />
     <ClCompile Include="src\sm_directories.cpp" />
     <ClCompile Include="src\sm_entity.cpp" />
+    <ClCompile Include="src\sm_entity_factory.cpp" />
     <ClCompile Include="src\sm_entity_manager.cpp" />
     <ClCompile Include="src\sm_event.cpp" />
     <ClCompile Include="src\sm_game.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="src\sm_controls.h" />
     <ClInclude Include="src\sm_directories.h" />
     <ClInclude Include="src\sm_entity.h" />
+    <ClInclude Include="src\sm_entity_factory.h" />
     <ClInclude Include="src\sm_entity_manager.h" />
     <ClInclude Include="src\sm_event.h" />
     <ClInclude Include="src\sm_game.h" />

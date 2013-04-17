@@ -1,14 +1,16 @@
 #include "includes.h"
 #include "sm_entity_manager.h"
 #include "sm_entity.h"
+#include "sm_entity_factory.h"
 
 using namespace Utilities;
 using namespace Base;
 
-SMEntityManager::EntityMap	SMEntityManager::m_EntityMap;
+SMEntityManager SMEntityManager::EntityManager;
 
 // *****************************************************************************
 SMEntityManager::SMEntityManager()
+	: m_pEntityFactory(DEBUG_NEW SMEntityFactory())
 {
 	m_EntityMap.clear();
 }
@@ -16,17 +18,27 @@ SMEntityManager::SMEntityManager()
 // *****************************************************************************
 SMEntityManager::~SMEntityManager()
 {
+	SafeDelete(&m_pEntityFactory);
 }
 
 // *****************************************************************************
-void SMEntityManager::VRegisterEntity(SMEntity * const pEntity)
+SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString & Name)
 {
-	Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Registering Entity: %d ", pEntity->GetID()) + pEntity->GetName());
-	m_EntityMap.insert(std::make_pair(pEntity->GetID(), pEntity));
+	SMEntity * pEntity = NULL;
+	if (m_pEntityFactory != NULL)
+	{
+		pEntity = m_pEntityFactory->CreateEntity(Type, Name);
+		if (pEntity != NULL)
+		{
+			Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Registering Entity: %d ", pEntity->GetID()) + " Type : " + Type + " Name : " + Name);
+			m_EntityMap.insert(std::make_pair(pEntity->GetID(), pEntity));
+		}
+	}
+	return pEntity;
 }
 
 // *****************************************************************************
-SMEntity * const SMEntityManager::VGetEntityFromID(const int ID)
+SMEntity * const SMEntityManager::GetEntityFromID(const int ID)
 {
 	//find the entity
 	EntityMap::const_iterator ent = m_EntityMap.find(ID);
@@ -40,18 +52,7 @@ SMEntity * const SMEntityManager::VGetEntityFromID(const int ID)
 }
 
 // *****************************************************************************
-cString const SMEntityManager::VGetEntityNameFromID(const int ID)
-{
-	SMEntity * pEntity = VGetEntityFromID(ID);
-	if (pEntity != NULL)
-	{
-		return pEntity->GetName();
-	}
-	return "";
-}
-
-// *****************************************************************************
-void SMEntityManager::UnRegisterEntity(SMEntity * const pEntity )
+void SMEntityManager::UnRegisterEntity(SMEntity * const pEntity)
 {
 	m_EntityMap.erase(m_EntityMap.find(pEntity->GetID()));
 }

@@ -67,7 +67,7 @@ void SMPlayer::CheckCollisions(const cVector2 & PredictedPos)
 	SMEntityManager::EntityMap::const_iterator Iter;
 	cVector2 PenetrationDistance;
 
-	for(Iter = SMEntityManager::GetEntityMap().begin(); Iter != SMEntityManager::GetEntityMap().end(); Iter++)
+	for(Iter = SMEntityManager::EntityManager.GetEntityMap().begin(); Iter != SMEntityManager::EntityManager.GetEntityMap().end(); Iter++)
 	{
 		SMEntity * pEntity = (Iter->second);
 		if(pEntity != NULL && this != pEntity && SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenetrationDistance))

@@ -1,6 +1,6 @@
 <Levels>
   <Level BackGround ="dirt.png" Width ="1000" Height = "1000"></Level>
-  <Player SpawnPointX ="320" SpawnPointY ="320" ></Player>
+  <Player SpawnPointX ="410" SpawnPointY ="160" ></Player>
   <StaticObjects>
     <StaticObject id ="1" Type ="rock" XPos ="50" YPos ="50"></StaticObject>
     <StaticObject id ="2" Type ="rock" XPos ="150" YPos ="250"></StaticObject>
