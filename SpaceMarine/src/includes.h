@@ -12,4 +12,15 @@
 #include "MyString.h"
 #include "Macros.h"
 #include "BaseUtilities.h"
+
+template <typename Interface>
+inline void SafeFreeSurface(Interface **ppInterfaceToFree)
+{
+	if (*ppInterfaceToFree != NULL)
+	{
+		SDL_FreeSurface(*ppInterfaceToFree);
+		(*ppInterfaceToFree) = NULL;
+	}
+}
+
 #endif // includes_h__

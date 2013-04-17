@@ -9,6 +9,8 @@
 #include "NonCopyable.h"
 #include "Vector2.h"
 
+class SMBounds;
+
 class SMEntity
 	: public Base::cNonCopyable
 {
@@ -18,24 +20,28 @@ public:
 	virtual ~SMEntity();
 	int GetID() const { return m_ID; }
 	Base::cString GetName() const { return m_Name; }
-	virtual bool VOnLoad(const Base::cString & FilePath);
-	virtual bool VOnLoad(const Base::cString & FilePath, const int Width,
-		const int Height, const int MaxFrames);
+	virtual bool VInitialize(const Base::cString & FilePath, const bool Collider);
+	virtual bool VInitialize(const Base::cString & FilePath, const int Width,
+		const int Height, const int MaxFrames, const bool Collider);
 	virtual void VUpdate(const float DeltaTime);
 	virtual void VRender(SDL_Surface * pDisplaySurface);
 	virtual void VCleanup();
 	Base::cVector2 GetPos() const { return m_Pos; }
-	void SetPos(Base::cVector2 val) { m_Pos = val; }
+	void SetPos(const Base::cVector2 & Pos);
 	Base::cVector2 GetSize() const { return m_Size; }
+	const SMBounds * const GetBounds() { return m_pBounds; }
 
 protected:
 	Base::cString	m_Name;
 	Base::cVector2	m_Pos;
 	Base::cVector2	m_Size;
 	SDL_Surface *	m_pSurface;
-
+	SMBounds *		m_pBounds;
+	Base::cVector2	m_Speed;
+	
 private:
 	void SetID(const int ID);
+	void CreateCollider();
 
 private:
 	int				m_ID;

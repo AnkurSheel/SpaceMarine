@@ -140,19 +140,10 @@ void SMGame::Cleanup()
 	SafeDelete(&m_pCamera);
 
 	SMEntityManager::Cleanup();
+	SafeFreeSurface(&m_pBGSurface);
+
+	SafeFreeSurface(&m_pDisplaySurface);
 	
-	if (m_pBGSurface != NULL)
-	{
-		SDL_FreeSurface(m_pBGSurface);
-		m_pBGSurface = NULL;
-	}
-
-	if (m_pDisplaySurface != NULL)
-	{
-		SDL_FreeSurface(m_pDisplaySurface);
-		m_pDisplaySurface = NULL;
-	}
-
 	//Quit SDL
 	SDL_Quit();
 	ILogger::Destroy();
@@ -218,7 +209,7 @@ void SMGame::LoadBackGround()
 void SMGame::CreatePlayer()
 {
 	m_pPlayer  = DEBUG_NEW SMPlayer("Player");
-	m_pPlayer->VOnLoad(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 100, 100, 1);
+	m_pPlayer->VInitialize(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 100, 100, 1, true);
 	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 	SMEntityManager::VRegisterEntity(m_pPlayer);
 }

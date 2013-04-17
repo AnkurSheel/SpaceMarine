@@ -2,6 +2,7 @@
 #include "sm_entity.h"
 #include "sm_surface.h"
 #include "sm_game.h"
+#include "sm_bounds.h"
 
 using namespace Utilities;
 using namespace Base;
@@ -12,6 +13,7 @@ int SMEntity::m_NextValidID = 0;
 SMEntity::SMEntity(const int ID, const Base::cString & Name)
 : m_Name(Name)
 , m_pSurface(NULL)
+, m_pBounds(NULL)
 {
 	SetID(ID);
 }
@@ -20,6 +22,7 @@ SMEntity::SMEntity(const int ID, const Base::cString & Name)
 SMEntity::SMEntity(const Base::cString & Name)
 : m_Name(Name)
 , m_pSurface(NULL)
+, m_pBounds(NULL)
 {
 	SetID(m_NextValidID);
 }
@@ -45,7 +48,7 @@ void SMEntity::SetID(const int iID)
 }
 
 // *****************************************************************************
-bool SMEntity::VOnLoad(const Base::cString & FilePath)
+bool SMEntity::VInitialize(const Base::cString & FilePath, const bool Collider)
 {
 	m_pSurface = SMSurface::OnLoad(FilePath);
 	if (m_pSurface == NULL)
@@ -55,20 +58,27 @@ bool SMEntity::VOnLoad(const Base::cString & FilePath)
 	m_Size.x = static_cast<float>(m_pSurface->w);
 	m_Size.y = static_cast<float>(m_pSurface->h);
 
+	if(Collider)
+	{
+		CreateCollider();
+	}
 	return true;
 }
 
 // *****************************************************************************
-bool SMEntity::VOnLoad(const Base::cString & FilePath, const int Width,
-	const int Height, const int MaxFrames)
+bool SMEntity::VInitialize(const Base::cString & FilePath, const int Width,
+	const int Height, const int MaxFrames, const bool Collider)
 {
-	m_Size.x = static_cast<float>(Width);
-	m_Size.y = static_cast<float>(Height);
-
-	m_pSurface = SMSurface::OnLoad(FilePath);
-	if (m_pSurface == NULL)
+	if(VInitialize(FilePath, Collider) == false)
 	{
 		return false;
+	}
+
+	m_Size.x = static_cast<float>(Width);
+	m_Size.y = static_cast<float>(Height);
+	if(Collider)
+	{
+		CreateCollider();
 	}
 	return true;
 }
@@ -93,9 +103,21 @@ void SMEntity::VRender(SDL_Surface * pDisplaySurface)
 // *****************************************************************************
 void SMEntity::VCleanup()
 {
-	if (m_pSurface != NULL)
+	SafeDelete(&m_pBounds);
+	SafeFreeSurface(&m_pSurface);
+}
+
+void SMEntity::CreateCollider()
+{
+	SafeDelete(&m_pBounds);
+	m_pBounds = DEBUG_NEW SMBounds(cVector2::Zero(), m_Size);
+}
+
+void SMEntity::SetPos(const Base::cVector2 & Pos)
+{
+	m_Pos = Pos;
+	if(m_pBounds != NULL)
 	{
-		SDL_FreeSurface(m_pSurface);
-		m_pSurface = NULL;
+		m_pBounds->Transalate(Pos);
 	}
 }

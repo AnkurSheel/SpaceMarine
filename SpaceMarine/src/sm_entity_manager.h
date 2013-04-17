@@ -15,6 +15,9 @@ class SMEntityManager
 	: public Base::cNonCopyable
 {
 public:
+	typedef std::map<int, SMEntity * const > EntityMap;
+
+public:
 	static void VRegisterEntity(SMEntity * const pEntity);
 	static void UnRegisterEntity(SMEntity * const pEntity);
 	static SMEntity * const VGetEntityFromID(const int ID);
@@ -24,13 +27,10 @@ public:
 	static void Cleanup();
 
 private:
-	typedef std::map<int, SMEntity * const > EntityMap;
-
-private:
 	SMEntityManager();
 	~SMEntityManager();
 
-private:
+public:
 	static  EntityMap		m_EntityMap;
 };
 

@@ -70,7 +70,7 @@ void SMLevel::LoadStaticObjects(IXMLFileIO * const pXMLFile)
 		int YPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "YPos");
 
 		SMEntity * pEntity = DEBUG_NEW SMStaticObject(strStaticObjectID);
-		pEntity->VOnLoad(SMDirectories::Directories.GetObjectSprites() + Type + ".png");
+		pEntity->VInitialize(SMDirectories::Directories.GetObjectSprites() + Type + ".png", true);
 		pEntity->SetPos(cVector2(XPos, YPos));
 		SMEntityManager::VRegisterEntity(pEntity);
 	}
