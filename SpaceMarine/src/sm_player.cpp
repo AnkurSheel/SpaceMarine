@@ -49,23 +49,31 @@ void SMPlayer::VUpdate(const float DeltaTime)
 		Clamp<float>(PredictedPos.y, 0, (SMLevel::Level.GetLevelSize().y - m_Size.y));
 		SetPos(PredictedPos);
 
-		SMEntityManager::EntityMap::const_iterator Iter;
-		cVector2 PenetrationDistance;
-		for(Iter = SMEntityManager::m_EntityMap.begin(); Iter != SMEntityManager::m_EntityMap.end(); Iter++)
-		{
-			SMEntity * pEntity = (Iter->second);
-			if(pEntity != NULL && this != pEntity && SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenetrationDistance))
-			{
-				Log_Write(ILogger::LT_DEBUG, 2, pEntity->GetName() + cString(100, "Collision Distance (%f, %f)", PenetrationDistance.x, PenetrationDistance.y));
-				PredictedPos += PenetrationDistance;
-				SetPos(PredictedPos);
-			}
-		}
+		CheckCollisions(PredictedPos);
+
 	}
 }
 
 // *****************************************************************************
 void SMPlayer::VRender(SDL_Surface * pDisplaySurface)
 {
-	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Pos.x - SMGame::GetCameraPosition().x), static_cast<int>(m_Pos.y - SMGame::GetCameraPosition().y), 0, 0, 64, 100);
+	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Pos.x - SMGame::GetCameraPosition().x),
+		static_cast<int>(m_Pos.y - SMGame::GetCameraPosition().y), 10, 20, static_cast<int>(m_Size.x), static_cast<int>(m_Size.y));
+}
+
+// *****************************************************************************
+void SMPlayer::CheckCollisions(const cVector2 & PredictedPos)
+{
+	SMEntityManager::EntityMap::const_iterator Iter;
+	cVector2 PenetrationDistance;
+
+	for(Iter = SMEntityManager::GetEntityMap().begin(); Iter != SMEntityManager::GetEntityMap().end(); Iter++)
+	{
+		SMEntity * pEntity = (Iter->second);
+		if(pEntity != NULL && this != pEntity && SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenetrationDistance))
+		{
+			cVector2 PredictedPos = m_Pos + PenetrationDistance;
+			SetPos(PredictedPos);
+		}
+	}
 }

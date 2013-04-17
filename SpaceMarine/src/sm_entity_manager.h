@@ -25,12 +25,14 @@ public:
 	static void Update(const float DeltaTime);
 	static void Render(SDL_Surface * pDisplaySurface);
 	static void Cleanup();
+	// return const reference to map to avoid overhead of copying the map
+	static const EntityMap & GetEntityMap() { return m_EntityMap; }
 
 private:
 	SMEntityManager();
 	~SMEntityManager();
 
-public:
+private:
 	static  EntityMap		m_EntityMap;
 };
 

@@ -13,5 +13,6 @@ public:
 	~SMPlayer();
 	void VUpdate(const float DeltaTime);
 	void VRender(SDL_Surface * pDisplaySurface);
+	void CheckCollisions(const Base::cVector2 & PredictedPos);
 
 };

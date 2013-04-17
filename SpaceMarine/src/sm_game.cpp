@@ -209,7 +209,7 @@ void SMGame::LoadBackGround()
 void SMGame::CreatePlayer()
 {
 	m_pPlayer  = DEBUG_NEW SMPlayer("Player");
-	m_pPlayer->VInitialize(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 100, 100, 1, true);
+	m_pPlayer->VInitialize(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 55, 64, 1, true);
 	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 	SMEntityManager::VRegisterEntity(m_pPlayer);
 }
