@@ -115,9 +115,10 @@ void SMEntity::CreateCollider()
 
 void SMEntity::SetPos(const Base::cVector2 & Pos)
 {
-	m_Pos = Pos;
 	if(m_pBounds != NULL)
 	{
-		m_pBounds->Transalate(Pos);
+		m_pBounds->Transalate(Pos - m_Pos);
 	}
+	m_Pos = Pos;
+
 }

@@ -48,6 +48,19 @@ void SMPlayer::VUpdate(const float DeltaTime)
 		Clamp<float>(PredictedPos.x, 0, (SMLevel::Level.GetLevelSize().x - m_Size.x));
 		Clamp<float>(PredictedPos.y, 0, (SMLevel::Level.GetLevelSize().y - m_Size.y));
 		SetPos(PredictedPos);
+
+		SMEntityManager::EntityMap::const_iterator Iter;
+		cVector2 PenetrationDistance;
+		for(Iter = SMEntityManager::m_EntityMap.begin(); Iter != SMEntityManager::m_EntityMap.end(); Iter++)
+		{
+			SMEntity * pEntity = (Iter->second);
+			if(pEntity != NULL && this != pEntity && SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenetrationDistance))
+			{
+				Log_Write(ILogger::LT_DEBUG, 2, pEntity->GetName() + cString(100, "Collision Distance (%f, %f)", PenetrationDistance.x, PenetrationDistance.y));
+				PredictedPos += PenetrationDistance;
+				SetPos(PredictedPos);
+			}
+		}
 	}
 }
 
