@@ -25,7 +25,11 @@ SMEntity * SMEntityFactory::CreateEntity(const cString & Type, const cString & N
 	{
 		return DEBUG_NEW SMPlayer(Name);
 	}
-	else if (Type.CompareInsensitive("SMStaticObject"))
+	else if (Type.CompareInsensitive("rock"))
+	{
+		return DEBUG_NEW SMStaticObject(Name);
+	}
+	else if (Type.CompareInsensitive("woods"))
 	{
 		return DEBUG_NEW SMStaticObject(Name);
 	}

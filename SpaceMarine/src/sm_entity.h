@@ -14,14 +14,10 @@ class SMEntity
 	: public Base::cNonCopyable
 {
 public:
-	SMEntity(const int ID, const Base::cString & Name);
-	SMEntity(const Base::cString & Name);
 	virtual ~SMEntity();
 	int GetID() const { return m_ID; }
 	Base::cString GetName() const { return m_Name; }
-	virtual bool VInitialize(const Base::cString & FilePath, const bool Collider);
-	virtual bool VInitialize(const Base::cString & FilePath, const int Width,
-		const int Height, const int MaxFrames, const bool Collider);
+	virtual bool VInitialize() = 0;
 	virtual void VUpdate(const float DeltaTime);
 	virtual void VRender(SDL_Surface * pDisplaySurface);
 	virtual void VCleanup();
@@ -29,6 +25,13 @@ public:
 	void SetPos(const Base::cVector2 & Pos);
 	Base::cVector2 GetSize() const { return m_Size; }
 	const SMBounds * const GetBounds() { return m_pBounds; }
+
+protected:
+	SMEntity(const int ID, const Base::cString & Name);
+	SMEntity(const Base::cString & Name);
+	virtual bool Initialize(const Base::cString & FilePath, const bool Collider);
+	virtual bool Initialize(const Base::cString & FilePath, const int Width,
+		const int Height, const bool Collider);
 
 protected:
 	Base::cString	m_Name;

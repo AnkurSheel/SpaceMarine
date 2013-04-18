@@ -68,10 +68,10 @@ void SMLevel::LoadStaticObjects(IXMLFileIO * const pXMLFile)
 		int XPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "XPos");
 		int YPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "YPos");
 
-		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity("SMStaticObject", strStaticObjectID);
+		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity(Type, Type);
 		if (pEntity != NULL)
 		{
-			pEntity->VInitialize(SMDirectories::Directories.GetObjectSprites() + Type + ".png", true);
+			pEntity->VInitialize();
 			pEntity->SetPos(cVector2(XPos, YPos));
 		}
 	}

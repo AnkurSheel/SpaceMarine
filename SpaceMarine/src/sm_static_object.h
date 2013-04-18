@@ -14,5 +14,6 @@ class SMStaticObject
 public:
 	SMStaticObject(const Base::cString & Name);
 	~SMStaticObject();
+	bool VInitialize();
 };
 #endif // sm_static_object_h__

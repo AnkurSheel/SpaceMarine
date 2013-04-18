@@ -38,6 +38,7 @@ public:
 	virtual void VOnKeyUp(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
 	static Base::cVector2 GetScreenSize() { return m_ScreenSize; }
 	static Base::cVector2 GetCameraPosition();
+	static const Utilities::IParamLoader * const GetConfig() { return m_pConfig; }
 
 private:
 	void SetLogOptions();
@@ -47,14 +48,15 @@ private:
 	void CreatePlayer();
 
 private:
-	bool						m_Running;
-	SDL_Surface *				m_pDisplaySurface;
-	SDL_Surface *				m_pBGSurface;
-	Utilities::ITimer *			m_pGameTimer;
-	Utilities::IParamLoader *	m_pParamLoader;
-	SMEntity *					m_pPlayer;
-	static Base::cVector2		m_ScreenSize;
-	static SMCamera *			m_pCamera;
+	bool								m_Running;
+	SDL_Surface *						m_pDisplaySurface;
+	SDL_Surface *						m_pBGSurface;
+	Utilities::ITimer *					m_pGameTimer;
+	Utilities::IParamLoader *			m_pParamLoader;
+	SMEntity *							m_pPlayer;
+	static Base::cVector2				m_ScreenSize;
+	static SMCamera *					m_pCamera;
+	static Utilities::IParamLoader *	m_pConfig;
 };
 
 #endif // sm_game_h__

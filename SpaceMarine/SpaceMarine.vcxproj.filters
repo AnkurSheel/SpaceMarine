@@ -124,5 +124,8 @@
     <None Include="..\Media\Levels\level1.xml">
       <Filter>Resource Files\Levels</Filter>
     </None>
+    <None Include="..\Media\config.ini">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@ using namespace Utilities;
 
 cVector2 SMGame::m_ScreenSize;
 SMCamera * SMGame::m_pCamera = NULL;
+Utilities::IParamLoader * SMGame::m_pConfig = NULL;
 
 // *****************************************************************************
 SMGame::SMGame()
@@ -92,6 +93,9 @@ bool SMGame::Initialize()
 	m_pGameTimer = ITimer::CreateTimer();
 	m_pGameTimer->VStartTimer();
 
+	m_pConfig = IParamLoader::CreateParamLoader();
+	m_pConfig->VLoadParametersFromFile(AssetsPath + "config.ini");
+
 	SMLevel::Level.Initialize("level1.xml");
 
 	LoadBackGround();
@@ -137,6 +141,7 @@ void SMGame::Cleanup()
 	SafeDelete(&m_pGameTimer);
 	SafeDelete(&m_pParamLoader);
 	SafeDelete(&m_pCamera);
+	SafeDelete(&m_pConfig);
 
 	SMEntityManager::EntityManager.Cleanup();
 	SafeFreeSurface(&m_pBGSurface);
@@ -208,7 +213,7 @@ void SMGame::LoadBackGround()
 void SMGame::CreatePlayer()
 {
 	m_pPlayer = SMEntityManager::EntityManager.RegisterEntity("SMPlayer", "Player");
-	m_pPlayer->VInitialize(SMDirectories::Directories.GetPlayerSprites() + "hero_spritesheet.png", 55, 64, 1, true);
+	m_pPlayer->VInitialize();
 	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 }
 

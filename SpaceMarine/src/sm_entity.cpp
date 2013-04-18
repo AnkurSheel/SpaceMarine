@@ -48,7 +48,7 @@ void SMEntity::SetID(const int iID)
 }
 
 // *****************************************************************************
-bool SMEntity::VInitialize(const Base::cString & FilePath, const bool Collider)
+bool SMEntity::Initialize(const Base::cString & FilePath, const bool Collider)
 {
 	m_pSurface = SMSurface::OnLoad(FilePath);
 	if (m_pSurface == NULL)
@@ -66,10 +66,10 @@ bool SMEntity::VInitialize(const Base::cString & FilePath, const bool Collider)
 }
 
 // *****************************************************************************
-bool SMEntity::VInitialize(const Base::cString & FilePath, const int Width,
-	const int Height, const int MaxFrames, const bool Collider)
+bool SMEntity::Initialize(const Base::cString & FilePath, const int Width,
+	const int Height, const bool Collider)
 {
-	if(VInitialize(FilePath, Collider) == false)
+	if(Initialize(FilePath, Collider) == false)
 	{
 		return false;
 	}

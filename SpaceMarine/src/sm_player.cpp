@@ -6,6 +6,8 @@
 #include "sm_game.h"
 #include "sm_entity_manager.h"
 #include "sm_bounds.h"
+#include "sm_directories.h"
+#include <ParamLoaders.hxx>
 
 using namespace Base;
 using namespace Utilities;
@@ -13,6 +15,7 @@ using namespace Utilities;
 // *****************************************************************************
 SMPlayer::SMPlayer(const Base::cString & Name) 
 	: SMEntity(Name)
+	, m_MaxSpeed(0)
 {
 }
 
@@ -23,24 +26,56 @@ SMPlayer::~SMPlayer()
 }
 
 // *****************************************************************************
+bool SMPlayer::VInitialize()
+{
+	if (SMGame::GetConfig() == NULL)
+	{
+		Log_Write(ILogger::LT_ERROR, 1, "Config not created");
+		return false;
+	}
+	cString PlayerSprite = SMGame::GetConfig()->VGetParameterValueAsString("-PlayerSpriteSheet", "");
+	if (PlayerSprite.IsEmpty())
+	{
+		Log_Write(ILogger::LT_ERROR, 1, "No sprite file defined for player. Parameter : PlayerSpriteSheet");
+		return false;
+	}
+	
+	m_MaxSpeed = SMGame::GetConfig()->VGetParameterValueAsFloat("-PlayerSpeed", 20);
+	
+	int Width = SMGame::GetConfig()->VGetParameterValueAsInt("-PlayerSpriteWidth", 0);
+	int Height = SMGame::GetConfig()->VGetParameterValueAsInt("-PlayerSpriteHeight", 0);
+	bool Collidable = SMGame::GetConfig()->VGetParameterValueAsBool("-PlayerCollider", false);
+
+	if (Width == 0 && Height == 0)
+	{
+		return Initialize(SMDirectories::Directories.GetPlayerSprites() + PlayerSprite, Collidable);
+	}
+	else
+	{
+		return Initialize(SMDirectories::Directories.GetPlayerSprites() + PlayerSprite, Width, Height, Collidable);
+	}
+	return true;
+}
+
+// *****************************************************************************
 void SMPlayer::VUpdate(const float DeltaTime)
 {
 	m_Speed = cVector2::Zero();
 	if (SMControls::Keys.IsKeyPressed(SDLK_DOWN))
 	{
-		m_Speed.y = 50;
+		m_Speed.y = m_MaxSpeed;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_UP))
 	{
-		m_Speed.y = -50;
+		m_Speed.y = -m_MaxSpeed;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_RIGHT))
 	{
-		m_Speed.x = 50;
+		m_Speed.x = m_MaxSpeed;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_LEFT))
 	{
-		m_Speed.x = -50;
+		m_Speed.x = -m_MaxSpeed;
 	}
 	if(!m_Speed.IsZero())
 	{
