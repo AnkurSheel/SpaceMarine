@@ -12,6 +12,7 @@
 #include "MyString.h"
 #include "Macros.h"
 #include "BaseUtilities.h"
+#include "NonCopyable.h"
 
 template <typename Interface>
 inline void SafeFreeSurface(Interface **ppInterfaceToFree)

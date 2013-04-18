@@ -6,7 +6,6 @@
 #ifndef sm_entity_h__
 #define sm_entity_h__
 
-#include "NonCopyable.h"
 #include "Vector2.h"
 
 class SMBounds;

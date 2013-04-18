@@ -6,8 +6,6 @@
 #ifndef sm_controls_h__
 #define sm_controls_h__
 
-#include "NonCopyable.h"
-
 class SMControls
 	: public Base::cNonCopyable
 {

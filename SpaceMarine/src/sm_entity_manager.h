@@ -6,7 +6,6 @@
 #ifndef sm_entity_manager_h__
 #define sm_entity_manager_h__
 
-#include "NonCopyable.h"
 #include <map>
 
 class SMEntity;

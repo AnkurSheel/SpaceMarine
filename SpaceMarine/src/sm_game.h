@@ -6,7 +6,6 @@
 #ifndef sm_game_h__
 #define sm_game_h__
 
-#include "NonCopyable.h"
 #include "sm_event.h"
 #include "vector2.h"
 

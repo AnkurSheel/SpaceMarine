@@ -6,8 +6,6 @@
 #ifndef sm_entity_factory_h__
 #define sm_entity_factory_h__
 
-#include "NonCopyable.h"
-
 class SMEntity;
 
 class SMEntityFactory

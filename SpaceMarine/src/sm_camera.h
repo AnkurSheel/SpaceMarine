@@ -4,7 +4,6 @@
 //  purpose:	
 // *****************************************************************************
 
-#include "NonCopyable.h"
 #include "Vector2.h"
 
 class SMEntity;
