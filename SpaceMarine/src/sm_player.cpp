@@ -1,14 +1,10 @@
 #include "includes.h"
 #include "sm_Player.h"
 #include "sm_controls.h"
-#include "sm_surface.h"
 #include "sm_level.h"
-#include "sm_game.h"
 #include "sm_entity_manager.h"
 #include "sm_bounds.h"
 #include "sm_directories.h"
-#include "sm_config.h"
-#include <XMLFileIO.hxx>
 
 using namespace Base;
 using namespace Utilities;
@@ -16,7 +12,6 @@ using namespace Utilities;
 // *****************************************************************************
 SMPlayer::SMPlayer(const Base::cString & Name) 
 	: SMEntity(Name)
-	, m_MaxSpeed(0)
 {
 }
 
@@ -29,28 +24,7 @@ SMPlayer::~SMPlayer()
 // *****************************************************************************
 bool SMPlayer::VInitialize()
 {
-	cString PlayerSprite = SMConfig::GetConfigLoader()->VGetNodeAttribute("Player", "Sprite");
-	if (PlayerSprite.IsEmpty())
-	{
-		Log_Write(ILogger::LT_ERROR, 1, "No sprite file defined for player. Parameter : PlayerSpriteSheet");
-		return false;
-	}
-	
-	m_MaxSpeed = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt("Player", "Speed");
-	
-	int Width = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt("Player", "Width");
-	int Height = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt("Player", "Height");
-	bool Collidable = SMConfig::GetConfigLoader()->VGetNodeAttributeAsBool("Player", "Collidable");
-
-	if (Width == 0 && Height == 0)
-	{
-		return Initialize(SMDirectories::Directories.GetPlayerSprites() + PlayerSprite, Collidable);
-	}
-	else
-	{
-		return Initialize(SMDirectories::Directories.GetPlayerSprites() + PlayerSprite, Width, Height, Collidable);
-	}
-	return true;
+	return Load("Player", SMDirectories::Directories.GetPlayerSprites());
 }
 
 // *****************************************************************************
@@ -83,13 +57,6 @@ void SMPlayer::VUpdate(const float DeltaTime)
 		CheckCollisions(PredictedPos);
 
 	}
-}
-
-// *****************************************************************************
-void SMPlayer::VRender(SDL_Surface * pDisplaySurface)
-{
-	SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Pos.x - SMGame::GetCameraPosition().x),
-		static_cast<int>(m_Pos.y - SMGame::GetCameraPosition().y), 10, 20, static_cast<int>(m_Size.x), static_cast<int>(m_Size.y));
 }
 
 // *****************************************************************************

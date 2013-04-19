@@ -23,14 +23,5 @@ SMStaticObject::~SMStaticObject()
 // *****************************************************************************
 bool SMStaticObject::VInitialize()
 {
-	cString ObjectSprite = SMConfig::GetConfigLoader()->VGetNodeAttribute(m_Name, "Sprite");
-	if (ObjectSprite.IsEmpty())
-	{
-		Log_Write(ILogger::LT_ERROR, 1, "No sprite file defined for Static Object " 
-			+ m_Name + " . Parameter : " + m_Name + "Sprite");
-		return false;
-	}
-
-	bool Collidable = SMConfig::GetConfigLoader()->VGetNodeAttributeAsBool(m_Name, "Collidable");
-	return Initialize(SMDirectories::Directories.GetObjectSprites() + ObjectSprite, Collidable);
+	return Load(m_Name, SMDirectories::Directories.GetObjectSprites());
 }

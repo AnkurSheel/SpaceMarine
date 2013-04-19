@@ -29,9 +29,7 @@ public:
 protected:
 	SMEntity(const int ID, const Base::cString & Name);
 	SMEntity(const Base::cString & Name);
-	virtual bool Initialize(const Base::cString & FilePath, const bool Collider);
-	virtual bool Initialize(const Base::cString & FilePath, const int Width,
-		const int Height, const bool Collider);
+	bool Load(const Base::cString & Name, const Base::cString & SpriteDirectory);
 
 protected:
 	Base::cString	m_Name;
@@ -40,10 +38,15 @@ protected:
 	SDL_Surface *	m_pSurface;
 	SMBounds *		m_pBounds;
 	Base::cVector2	m_Speed;
+	Base::cVector2	m_SpritePos;
+	int				m_MaxSpeed;
 	
 private:
 	void SetID(const int ID);
 	void CreateCollider();
+	bool Initialize(const Base::cString & FilePath, const bool Collider);
+	bool Initialize(const Base::cString & FilePath, const int Width,
+		const int Height, const bool Collider);
 
 private:
 	int				m_ID;

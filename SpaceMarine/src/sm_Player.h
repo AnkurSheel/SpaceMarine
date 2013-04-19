@@ -16,11 +16,7 @@ public:
 	~SMPlayer();
 	bool VInitialize();
 	void VUpdate(const float DeltaTime);
-	void VRender(SDL_Surface * pDisplaySurface);
 	void CheckCollisions(const Base::cVector2 & PredictedPos);
-
-private:
-	int	m_MaxSpeed;
 };
 
 #endif // sm_Player_h__
