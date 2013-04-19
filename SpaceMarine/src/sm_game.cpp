@@ -111,6 +111,7 @@ void SMGame::Update()
 	if (m_pGameTimer)
 	{
 		m_pGameTimer->VOnUpdate();
+		SMLevel::Level.Update(m_pGameTimer->VGetDeltaTime());
 		SMEntityManager::EntityManager.Update(m_pGameTimer->VGetDeltaTime());
 	}
 	if (m_pCamera)

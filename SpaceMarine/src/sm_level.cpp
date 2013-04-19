@@ -14,7 +14,12 @@ SMLevel SMLevel::Level;
 // *****************************************************************************
 SMLevel::SMLevel()
 	: m_pRandom(NULL)
+	, m_MaxEnemies(0)
 	, m_EnemiesWeightRange(0)
+	, m_Initialized(false)
+	, m_LastSpawnTime(0.0f)
+	, m_SpawnInterval(0.0f)
+	, m_MaxEnemiesSpawned(false)
 {
 
 }
@@ -35,8 +40,10 @@ bool SMLevel::Initialize(const cString & LevelName)
 		return false;
 	}
 	m_pRandom = IRandomGenerator::CreateRandomGenerator();
-
+	
+	int InitialEnemies = 0;
 	IXMLFileIO * pXMLFile = IXMLFileIO::CreateXMLFile();
+	
 	if(pXMLFile->VLoad(SMDirectories::Directories.GetLevels() + LevelName))
 	{
 		m_Background = pXMLFile->VGetNodeAttribute("Level", "BackGround");
@@ -68,12 +75,9 @@ bool SMLevel::Initialize(const cString & LevelName)
 			m_EnemiesWeightRange += Enemydata.m_Weight;
 		}
 
-		int MaxEnemies = pXMLFile->VGetNodeAttributeAsInt("Enemies", "Max");
-		int InitialEnemies = pXMLFile->VGetNodeAttributeAsInt("Enemies", "Initial");
-		for(int Idx = 0; Idx < InitialEnemies; Idx++)
-		{
-			AddEnemy(pXMLFile);
-		}
+		m_MaxEnemies = pXMLFile->VGetNodeAttributeAsInt("Enemies", "Max");
+		InitialEnemies = pXMLFile->VGetNodeAttributeAsInt("Enemies", "Initial");
+		m_SpawnInterval = (pXMLFile->VGetNodeAttributeAsInt("Enemies", "SpawnInterval") / 1000.0f);
 	}
 	else
 	{
@@ -81,7 +85,27 @@ bool SMLevel::Initialize(const cString & LevelName)
 		return false;
 	}
 	SafeDelete(&pXMLFile);
+	for(int Idx = 0; Idx < InitialEnemies; Idx++)
+	{
+		AddEnemy();
+	}
+	m_Initialized = true;
 	return true;
+}
+
+// *****************************************************************************
+void SMLevel::Update(const float DeltaTime)
+{
+	if(m_Initialized && !m_MaxEnemiesSpawned)
+	{
+		m_LastSpawnTime += DeltaTime;
+		if(m_LastSpawnTime >= m_SpawnInterval)
+		{
+			m_LastSpawnTime = 0.0f;
+			AddEnemy();
+		}
+
+	}
 }
 
 // *****************************************************************************
@@ -108,8 +132,17 @@ void SMLevel::LoadStaticObjects(const IXMLFileIO * const pXMLFile)
 }
 
 // *****************************************************************************
-void SMLevel::AddEnemy(const Utilities::IXMLFileIO * const pXMLFile)
+void SMLevel::AddEnemy()
 {
+	SMEntityManager::EntityList EnemiesList;
+	SMEntityManager::EntityManager.GetEntitiesOfType("Enemy", EnemiesList);
+	if(EnemiesList.size() >= m_MaxEnemies)
+	{
+		Log_Write(ILogger::LT_COMMENT, 1, "Max Enemies Spawned");
+		m_MaxEnemiesSpawned = true;
+		return;
+	}
+
 	SMEntity * pEntity = NULL; 
 	int Val = 0;
 
