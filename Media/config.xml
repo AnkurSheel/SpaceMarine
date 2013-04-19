@@ -1,0 +1,5 @@
+<Config>
+  <Player Sprite = "hero_spritesheet.png" Width = "55" Height = "64" Collidable = "true" Speed = "150"></Player>
+  <Rock Sprite = "rock.png" Collidable = "true"></Rock>
+  <Woods Sprite = "woods.png" Collidable = "true"></Woods>
+</Config>

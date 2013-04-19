@@ -38,7 +38,6 @@ public:
 	virtual void VOnKeyUp(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
 	static Base::cVector2 GetScreenSize() { return m_ScreenSize; }
 	static Base::cVector2 GetCameraPosition();
-	static const Utilities::IParamLoader * const GetConfig() { return m_pConfig; }
 
 private:
 	void SetLogOptions();
@@ -56,7 +55,6 @@ private:
 	SMEntity *							m_pPlayer;
 	static Base::cVector2				m_ScreenSize;
 	static SMCamera *					m_pCamera;
-	static Utilities::IParamLoader *	m_pConfig;
 };
 
 #endif // sm_game_h__

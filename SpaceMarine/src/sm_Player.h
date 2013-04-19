@@ -3,6 +3,9 @@
 // *****************************************************************************
 //  purpose:	
 // *****************************************************************************
+#ifndef sm_Player_h__
+#define sm_Player_h__
+
 #include "sm_entity.h"
 
 class SMPlayer
@@ -17,5 +20,7 @@ public:
 	void CheckCollisions(const Base::cVector2 & PredictedPos);
 
 private:
-	float	m_MaxSpeed;
+	int	m_MaxSpeed;
 };
+
+#endif // sm_Player_h__

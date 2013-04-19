@@ -66,6 +66,9 @@
     <ClCompile Include="src\sm_entity_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sm_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sm_game.h">
@@ -110,6 +113,9 @@
     <ClInclude Include="src\sm_entity_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sm_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\Options.ini">
@@ -124,7 +130,7 @@
     <None Include="..\Media\Levels\level1.xml">
       <Filter>Resource Files\Levels</Filter>
     </None>
-    <None Include="..\Media\config.ini">
+    <None Include="..\Media\config.xml">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

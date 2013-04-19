@@ -14,6 +14,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sm_bounds.cpp" />
     <ClCompile Include="src\sm_camera.cpp" />
+    <ClCompile Include="src\sm_config.cpp" />
     <ClCompile Include="src\sm_controls.cpp" />
     <ClCompile Include="src\sm_directories.cpp" />
     <ClCompile Include="src\sm_entity.cpp" />
@@ -30,6 +31,7 @@
     <ClInclude Include="src\includes.h" />
     <ClInclude Include="src\sm_bounds.h" />
     <ClInclude Include="src\sm_camera.h" />
+    <ClInclude Include="src\sm_config.h" />
     <ClInclude Include="src\sm_controls.h" />
     <ClInclude Include="src\sm_directories.h" />
     <ClInclude Include="src\sm_entity.h" />
@@ -47,7 +49,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\Media\config.ini">
+    <None Include="..\Media\config.xml">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>

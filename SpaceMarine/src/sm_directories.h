@@ -13,6 +13,7 @@ class SMDirectories
 {
 public:
 	bool Initialize(const Base::cString & AssetsPath, const Base::cString & DirectoriesFileName);
+	Base::cString GetAssetsPath() const { return m_AssetsPath; }
 	Base::cString GetBackGroundSprites() const { return m_BackGroundSprites; }
 	Base::cString GetPlayerSprites() const { return m_PlayerSprites; }
 	Base::cString GetLevels() const { return m_Levels; }

@@ -7,7 +7,8 @@
 #include "sm_entity_manager.h"
 #include "sm_bounds.h"
 #include "sm_directories.h"
-#include <ParamLoaders.hxx>
+#include "sm_config.h"
+#include <XMLFileIO.hxx>
 
 using namespace Base;
 using namespace Utilities;
@@ -28,23 +29,18 @@ SMPlayer::~SMPlayer()
 // *****************************************************************************
 bool SMPlayer::VInitialize()
 {
-	if (SMGame::GetConfig() == NULL)
-	{
-		Log_Write(ILogger::LT_ERROR, 1, "Config not created");
-		return false;
-	}
-	cString PlayerSprite = SMGame::GetConfig()->VGetParameterValueAsString("-PlayerSpriteSheet", "");
+	cString PlayerSprite = SMConfig::GetConfigLoader()->VGetNodeAttribute("Player", "Sprite");
 	if (PlayerSprite.IsEmpty())
 	{
 		Log_Write(ILogger::LT_ERROR, 1, "No sprite file defined for player. Parameter : PlayerSpriteSheet");
 		return false;
 	}
 	
-	m_MaxSpeed = SMGame::GetConfig()->VGetParameterValueAsFloat("-PlayerSpeed", 20);
+	m_MaxSpeed = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt("Player", "Speed");
 	
-	int Width = SMGame::GetConfig()->VGetParameterValueAsInt("-PlayerSpriteWidth", 0);
-	int Height = SMGame::GetConfig()->VGetParameterValueAsInt("-PlayerSpriteHeight", 0);
-	bool Collidable = SMGame::GetConfig()->VGetParameterValueAsBool("-PlayerCollider", false);
+	int Width = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt("Player", "Width");
+	int Height = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt("Player", "Height");
+	bool Collidable = SMConfig::GetConfigLoader()->VGetNodeAttributeAsBool("Player", "Collidable");
 
 	if (Width == 0 && Height == 0)
 	{
@@ -63,19 +59,19 @@ void SMPlayer::VUpdate(const float DeltaTime)
 	m_Speed = cVector2::Zero();
 	if (SMControls::Keys.IsKeyPressed(SDLK_DOWN))
 	{
-		m_Speed.y = m_MaxSpeed;
+		m_Speed.y = static_cast<float>(m_MaxSpeed);
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_UP))
 	{
-		m_Speed.y = -m_MaxSpeed;
+		m_Speed.y = static_cast<float>(-m_MaxSpeed);
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_RIGHT))
 	{
-		m_Speed.x = m_MaxSpeed;
+		m_Speed.x = static_cast<float>(m_MaxSpeed);
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_LEFT))
 	{
-		m_Speed.x = -m_MaxSpeed;
+		m_Speed.x = static_cast<float>(-m_MaxSpeed);
 	}
 	if(!m_Speed.IsZero())
 	{
