@@ -12,7 +12,8 @@ class SMPlayer
 	: public SMEntity
 {
 public:
-	SMPlayer(const Base::cString & Type, const Base::cString & Name);
+	SMPlayer(const Base::cString & Type, const Base::cString & SubType,
+		const Base::cString & Name);
 	~SMPlayer();
 	bool VInitialize();
 	void VUpdate(const float DeltaTime);

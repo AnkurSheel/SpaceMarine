@@ -6,8 +6,8 @@ using namespace Base;
 using namespace Utilities;
 
 // *****************************************************************************
-SMEnemy::SMEnemy(const Base::cString & Type, const Base::cString & Name)
-	: SMEntity(Type, Name)
+SMEnemy::SMEnemy(const cString & Type, const cString & SubType, const cString & Name)
+	: SMEntity(Type, SubType, Name)
 {
 
 }
@@ -21,5 +21,5 @@ SMEnemy::~SMEnemy()
 // *****************************************************************************
 bool SMEnemy::VInitialize()
 {
-	return Load(m_Type.GetString(), SMDirectories::Directories.GetEnemySprites());
+	return Load(SMDirectories::Directories.GetEnemySprites());
 }

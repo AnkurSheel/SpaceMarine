@@ -6,8 +6,9 @@ using namespace Base;
 using namespace Utilities;
 
 // *****************************************************************************
-SMStaticObject::SMStaticObject(const Base::cString & Type, const Base::cString & Name)
-	: SMEntity(Type, Name)
+SMStaticObject::SMStaticObject(const cString & Type, const cString & SubType,
+	const cString & Name)
+	: SMEntity(Type, SubType, Name)
 {
 
 }
@@ -21,5 +22,5 @@ SMStaticObject::~SMStaticObject()
 // *****************************************************************************
 bool SMStaticObject::VInitialize()
 {
-	return Load(m_Name, SMDirectories::Directories.GetObjectSprites());
+	return Load(SMDirectories::Directories.GetObjectSprites());
 }

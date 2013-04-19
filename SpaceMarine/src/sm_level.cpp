@@ -69,7 +69,8 @@ bool SMLevel::Initialize(const cString & LevelName)
 		}
 
 		int MaxEnemies = pXMLFile->VGetNodeAttributeAsInt("Enemies", "Max");
-		for(int Idx = 0; Idx < MaxEnemies; Idx++)
+		int InitialEnemies = pXMLFile->VGetNodeAttributeAsInt("Enemies", "Initial");
+		for(int Idx = 0; Idx < InitialEnemies; Idx++)
 		{
 			AddEnemy(pXMLFile);
 		}
@@ -97,7 +98,7 @@ void SMLevel::LoadStaticObjects(const IXMLFileIO * const pXMLFile)
 		int XPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "XPos");
 		int YPos = pXMLFile->VGetNodeAttributeAsInt(strStaticObjectID, "YPos");
 
-		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity(Type, Type);
+		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity("StaticObject", Type, strStaticObjectID);
 		if (pEntity != NULL)
 		{
 			pEntity->VInitialize();
@@ -121,7 +122,7 @@ void SMLevel::AddEnemy(const Utilities::IXMLFileIO * const pXMLFile)
 		Val += EnemyData.m_Weight;
 		if(Random <= Val)
 		{
-			pEntity = SMEntityManager::EntityManager.RegisterEntity(EnemyData.m_Type, "Soldier");
+			pEntity = SMEntityManager::EntityManager.RegisterEntity("Enemy", EnemyData.m_Type, "Soldier");
 			break;
 		}
 	}

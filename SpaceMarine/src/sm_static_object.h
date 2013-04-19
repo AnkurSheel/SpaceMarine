@@ -12,7 +12,8 @@ class SMStaticObject
 	: public SMEntity
 {
 public:
-	SMStaticObject(const Base::cString & Type, const Base::cString & Name);
+	SMStaticObject(const Base::cString & Type, const Base::cString & SubType,
+		const Base::cString & Name);
 	~SMStaticObject();
 	bool VInitialize();
 };

@@ -12,9 +12,10 @@ using namespace Base;
 int SMEntity::m_NextValidID = 0;
 
 // *****************************************************************************
-SMEntity::SMEntity(const Base::cString & Type, const cString & Name)
+SMEntity::SMEntity(const cString & Type, const cString & SubType, const cString & Name)
 : m_Name(Name)
 , m_Type(Type)
+, m_SubType(SubType)
 , m_pSurface(NULL)
 , m_pBounds(NULL)
 {
@@ -130,21 +131,21 @@ void SMEntity::SetPos(const cVector2 & Pos)
 }
 
 // *****************************************************************************
-bool SMEntity::Load(const cString & Name, const cString & SpriteDirectory)
+bool SMEntity::Load(const cString & SpriteDirectory)
 {
-	cString Sprite = SMConfig::GetConfigLoader()->VGetNodeAttribute(Name, "Sprite");
+	cString Sprite = SMConfig::GetConfigLoader()->VGetNodeAttribute(m_SubType, "Sprite");
 	if (Sprite.IsEmpty())
 	{
-		Log_Write(ILogger::LT_WARNING, 1, "No sprite file defined for " + Name + ". Attribute - Sprite");
+		Log_Write(ILogger::LT_WARNING, 1, "No sprite file defined for " + m_SubType + ". Attribute - Sprite");
 	}
 	
-	m_MaxSpeed = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(Name, "Speed");
-	m_SpritePos.x = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(Name, "XPos");
-	m_SpritePos.y = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(Name, "YPos");
+	m_MaxSpeed = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Speed");
+	m_SpritePos.x = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "XPos");
+	m_SpritePos.y = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "YPos");
 
-	int Width = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(Name, "Width");
-	int Height = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(Name, "Height");
-	bool Collidable = SMConfig::GetConfigLoader()->VGetNodeAttributeAsBool(Name, "Collidable");
+	int Width = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Width");
+	int Height = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Height");
+	bool Collidable = SMConfig::GetConfigLoader()->VGetNodeAttributeAsBool(m_SubType, "Collidable");
 
 	if (Width == 0 || Height == 0)
 	{

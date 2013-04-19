@@ -207,7 +207,7 @@ void SMGame::LoadBackGround()
 // *****************************************************************************
 void SMGame::CreatePlayer()
 {
-	m_pPlayer = SMEntityManager::EntityManager.RegisterEntity("SMPlayer", "Player");
+	m_pPlayer = SMEntityManager::EntityManager.RegisterEntity("Player", "Player", "Player");
 	m_pPlayer->VInitialize();
 	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 }

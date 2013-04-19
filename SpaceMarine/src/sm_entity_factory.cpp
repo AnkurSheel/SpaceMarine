@@ -20,28 +20,29 @@ SMEntityFactory::~SMEntityFactory()
 }
 
 // *****************************************************************************
-SMEntity * SMEntityFactory::CreateEntity(const cString & Type, const cString & Name)
+SMEntity * SMEntityFactory::CreateEntity(const cString & Type, const cString & SubType,
+	const cString & Name)
 {
-	if (Type.CompareInsensitive("SMPlayer"))
+	if (SubType.CompareInsensitive("player"))
 	{
-		return DEBUG_NEW SMPlayer(Type, Name);
+		return DEBUG_NEW SMPlayer(Type, SubType, Name);
 	}
-	else if (Type.CompareInsensitive("rock"))
+	else if (SubType.CompareInsensitive("rock"))
 	{
-		return DEBUG_NEW SMStaticObject(Type, Name);
+		return DEBUG_NEW SMStaticObject(Type, SubType, Name);
 	}
-	else if (Type.CompareInsensitive("woods"))
+	else if (SubType.CompareInsensitive("woods"))
 	{
-		return DEBUG_NEW SMStaticObject(Type, Name);
+		return DEBUG_NEW SMStaticObject(Type, SubType, Name);
 	}
-	else if (Type.CompareInsensitive("meleesoldier"))
+	else if (SubType.CompareInsensitive("meleesoldier"))
 	{
-		return DEBUG_NEW SMEnemy(Type, Name);
+		return DEBUG_NEW SMEnemy(Type, SubType, Name);
 	}
-	else if (Type.CompareInsensitive("rangedsoldier"))
+	else if (SubType.CompareInsensitive("rangedsoldier"))
 	{
-		return DEBUG_NEW SMEnemy(Type, Name);
+		return DEBUG_NEW SMEnemy(Type, SubType, Name);
 	}
-	Log_Write(ILogger::LT_ERROR, 1, "Cannot create Entity of Type :" + Type);
+	Log_Write(ILogger::LT_ERROR, 1, "Cannot create Entity of Type :" + Type + " SubType : " + SubType);
 	return NULL;
 }

@@ -30,12 +30,14 @@ public:
 	const SMBounds * const GetBounds() { return m_pBounds; }
 
 protected:
-	SMEntity(const Base::cString & Type, const Base::cString & Name);
-	bool Load(const Base::cString & Name, const Base::cString & SpriteDirectory);
+	SMEntity(const Base::cString & Type, const Base::cString & SubType,
+		const Base::cString & Name);
+	bool Load(const Base::cString & SpriteDirectory);
 
 protected:
 	Base::cString			m_Name;
 	Base::cHashedString		m_Type;
+	Base::cString			m_SubType;
 	Base::cVector2			m_Pos;
 	Base::cVector2			m_Size;
 	SDL_Surface *			m_pSurface;

@@ -12,7 +12,8 @@ class SMEnemy
 	: public SMEntity
 {
 public:
-	SMEnemy(const Base::cString & Type, const Base::cString & Name);
+	SMEnemy(const Base::cString & Type, const Base::cString & SubType,
+		const Base::cString & Name);
 	~SMEnemy();
 	bool VInitialize();
 };

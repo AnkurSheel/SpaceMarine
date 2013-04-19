@@ -14,6 +14,7 @@ class SMEntityFactory
 public:
 	SMEntityFactory();
 	~SMEntityFactory();
-	SMEntity * CreateEntity(const Base::cString & Type, const Base::cString & Name);
+	SMEntity * CreateEntity(const Base::cString & Type, const Base::cString & SubType,
+		const Base::cString & Name);
 };
 #endif // sm_entity_factory_h__

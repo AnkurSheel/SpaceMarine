@@ -23,15 +23,17 @@ SMEntityManager::~SMEntityManager()
 }
 
 // *****************************************************************************
-SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString & Name)
+SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString & SubType,
+	const cString & Name)
 {
 	SMEntity * pEntity = NULL;
 	if (m_pEntityFactory != NULL)
 	{
-		pEntity = m_pEntityFactory->CreateEntity(Type, Name);
+		pEntity = m_pEntityFactory->CreateEntity(Type, SubType, Name);
 		if (pEntity != NULL)
 		{
-			Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Registering Entity: %d ", pEntity->GetID()) + " Type : " + Type + " Name : " + Name);
+			Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Registering Entity: %d ", pEntity->GetID()) + " Type : " + Type
+				+ " SubType : " + SubType+ " Name : " + Name);
 			EntityMap::iterator iter = m_EntityMap.find(pEntity->GetTypeHash());
 			if(iter == m_EntityMap.end())
 			{

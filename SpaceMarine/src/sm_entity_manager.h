@@ -20,7 +20,8 @@ public:
 	typedef std::map<unsigned long, EntityList> EntityMap;
 
 public:
-	SMEntity * RegisterEntity(const Base::cString & Type, const Base::cString & Name);
+	SMEntity * RegisterEntity(const Base::cString & Type, const Base::cString & SubType,
+		const Base::cString & Name);
 	void UnRegisterEntity(SMEntity * const pEntity);
 	void Update(const float DeltaTime);
 	void Render(SDL_Surface * pDisplaySurface);
