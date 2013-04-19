@@ -12,18 +12,9 @@ using namespace Base;
 int SMEntity::m_NextValidID = 0;
 
 // *****************************************************************************
-SMEntity::SMEntity(const int ID, const cString & Name)
-	: m_Name(Name)
-	, m_pSurface(NULL)
-	, m_pBounds(NULL)
-	, m_MaxSpeed(0)
-{
-	SetID(ID);
-}
-
-// *****************************************************************************
-SMEntity::SMEntity(const cString & Name)
+SMEntity::SMEntity(const Base::cString & Type, const cString & Name)
 : m_Name(Name)
+, m_Type(Type)
 , m_pSurface(NULL)
 , m_pBounds(NULL)
 {

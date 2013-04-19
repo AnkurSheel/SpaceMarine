@@ -23,4 +23,8 @@
     <StaticObject id ="19" Type ="woods" XPos ="150" YPos ="650"></StaticObject>
     <StaticObject id ="20" Type ="woods" XPos ="250" YPos ="850"></StaticObject>
   </StaticObjects>
+  <Enemies Max ="600">
+    <Enemy id = "1" Type ="MeleeSoldier" Weight = "50"></Enemy>
+    <Enemy id = "2" Type ="RangedSoldier" Weight ="10"></Enemy>
+  </Enemies>
 </Levels>

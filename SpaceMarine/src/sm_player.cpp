@@ -10,8 +10,8 @@ using namespace Base;
 using namespace Utilities;
 
 // *****************************************************************************
-SMPlayer::SMPlayer(const Base::cString & Name) 
-	: SMEntity(Name)
+SMPlayer::SMPlayer(const Base::cString & Type, const Base::cString & Name) 
+	: SMEntity(Type, Name)
 {
 }
 
@@ -62,12 +62,26 @@ void SMPlayer::VUpdate(const float DeltaTime)
 // *****************************************************************************
 void SMPlayer::CheckCollisions(const cVector2 & PredictedPos)
 {
-	SMEntityManager::EntityMap::const_iterator Iter;
+	SMEntityManager::EntityList::const_iterator ListIter;
 	cVector2 PenetrationDistance;
+	SMEntity * pEntity;
+	SMEntityManager::EntityList List;
 
-	for(Iter = SMEntityManager::EntityManager.GetEntityMap().begin(); Iter != SMEntityManager::EntityManager.GetEntityMap().end(); Iter++)
+	SMEntityManager::EntityManager.GetEntitiesOfType("rock", List);
+	for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 	{
-		SMEntity * pEntity = (Iter->second);
+		pEntity = *ListIter;
+		if(pEntity != NULL && this != pEntity && SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenetrationDistance))
+		{
+			cVector2 PredictedPos = m_Pos + PenetrationDistance;
+			SetPos(PredictedPos);
+		}
+	}
+
+	SMEntityManager::EntityManager.GetEntitiesOfType("woods", List);
+	for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
+	{
+		pEntity = *ListIter;
 		if(pEntity != NULL && this != pEntity && SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenetrationDistance))
 		{
 			cVector2 PredictedPos = m_Pos + PenetrationDistance;

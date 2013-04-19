@@ -8,10 +8,12 @@
 
 #include <NonCopyable.h>
 #include <Vector2.h>
+#include <list>
 
 namespace Utilities
 {
 	class IXMLFileIO;
+	class IRandomGenerator;
 }
 
 class SMLevel
@@ -27,13 +29,25 @@ public:
 	static SMLevel Level;
 
 private:
-	SMLevel();
-	~SMLevel();
-	void LoadStaticObjects(Utilities::IXMLFileIO * const pXMLFile);
+	struct SMEnemyData
+	{
+		int				m_Weight;
+		Base::cString	m_Type;
+	};
+	typedef std::list<SMEnemyData> EnemydataList;
 
 private:
-	Base::cString	m_Background;
-	Base::cVector2	m_LevelSize;
-	Base::cVector2	m_PlayerSpawnPoint;
+	SMLevel();
+	~SMLevel();
+	void LoadStaticObjects(const Utilities::IXMLFileIO * const pXMLFile);
+	void AddEnemy(const Utilities::IXMLFileIO * const pXMLFile);
+
+private:
+	Base::cString					m_Background;
+	Base::cVector2					m_LevelSize;
+	Base::cVector2					m_PlayerSpawnPoint;
+	Utilities::IRandomGenerator *	m_pRandom;
+	int								m_EnemiesWeightRange;
+	EnemydataList					m_EnemyDataList;
 };
 #endif // sm_level_h__

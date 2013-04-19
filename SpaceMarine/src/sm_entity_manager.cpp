@@ -2,6 +2,7 @@
 #include "sm_entity_manager.h"
 #include "sm_entity.h"
 #include "sm_entity_factory.h"
+#include <HashedString.h>
 
 using namespace Utilities;
 using namespace Base;
@@ -31,66 +32,103 @@ SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString &
 		if (pEntity != NULL)
 		{
 			Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Registering Entity: %d ", pEntity->GetID()) + " Type : " + Type + " Name : " + Name);
-			m_EntityMap.insert(std::make_pair(pEntity->GetID(), pEntity));
+			EntityMap::iterator iter = m_EntityMap.find(pEntity->GetTypeHash());
+			if(iter == m_EntityMap.end())
+			{
+				EntityList list;
+				list.push_back(pEntity);
+				m_EntityMap.insert(std::make_pair(pEntity->GetTypeHash(), list));
+			}
+			else
+			{
+				EntityList & list = iter->second;
+				list.push_back(pEntity);
+			}
 		}
 	}
 	return pEntity;
-}
 
-// *****************************************************************************
-SMEntity * const SMEntityManager::GetEntityFromID(const int ID)
-{
-	//find the entity
-	EntityMap::const_iterator ent = m_EntityMap.find(ID);
 
-	//assert that the entity is a member of the map
-	if (ent !=  m_EntityMap.end())
-	{
-		return ent->second;
-	}
-	return NULL;
 }
 
 // *****************************************************************************
 void SMEntityManager::UnRegisterEntity(SMEntity * const pEntity)
 {
-	m_EntityMap.erase(m_EntityMap.find(pEntity->GetID()));
+	EntityMap::iterator EntityIter = m_EntityMap.find(pEntity->GetTypeHash());
+	
+	EntityList & List = EntityIter->second;
+	List.remove(pEntity);
+	if(List.empty())
+	{
+		m_EntityMap.erase(pEntity->GetTypeHash());
+	}
 }
 
 // *****************************************************************************
 void SMEntityManager::Update(const float DeltaTime)
 {
-	SMEntityManager::EntityMap::iterator Iter;
+	SMEntityManager::EntityMap::iterator MapIter;
 	SMEntity * pEntity;
-	for (Iter = m_EntityMap.begin(); Iter != m_EntityMap.end(); Iter++)
+	for (MapIter = m_EntityMap.begin(); MapIter != m_EntityMap.end(); MapIter++)
 	{
-		pEntity = (Iter->second);
-		pEntity->VUpdate(DeltaTime);
+		EntityList & List = (MapIter->second);
+		SMEntityManager::EntityList ::iterator ListIter;
+		for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
+		{
+			pEntity = *ListIter;
+			pEntity->VUpdate(DeltaTime);
+		}
 	}
 }
 
 // *****************************************************************************
 void SMEntityManager::Render(SDL_Surface * pDisplaySurface)
 {
-	SMEntityManager::EntityMap::iterator Iter;
+	SMEntityManager::EntityMap::iterator MapIter;
 	SMEntity * pEntity;
-	for (Iter = m_EntityMap.begin(); Iter != m_EntityMap.end(); Iter++)
+	for (MapIter = m_EntityMap.begin(); MapIter != m_EntityMap.end(); MapIter++)
 	{
-		pEntity = (Iter->second);
-		pEntity->VRender(pDisplaySurface);
+		EntityList & List = (MapIter->second);
+		SMEntityManager::EntityList ::iterator ListIter;
+		for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
+		{
+			pEntity = *ListIter;
+			pEntity->VRender(pDisplaySurface);
+		}
 	}
 }
 
 // *****************************************************************************
 void SMEntityManager::Cleanup()
 {
-	SMEntityManager::EntityMap::iterator Iter;
+	SMEntityManager::EntityMap::iterator MapIter;
+	EntityList List;
 	SMEntity * pEntity;
-	for (Iter = m_EntityMap.begin(); Iter != m_EntityMap.end(); Iter++)
+	for (MapIter = m_EntityMap.begin(); MapIter != m_EntityMap.end(); MapIter++)
 	{
-		pEntity = (Iter->second);
-		pEntity->VCleanup();
-		SafeDelete(&pEntity);
+		List = (MapIter->second);
+		SMEntityManager::EntityList ::iterator ListIter;
+		for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
+		{
+			pEntity = *ListIter;
+			pEntity->VCleanup();
+			SafeDelete(&pEntity);
+		}
 	}
 	m_EntityMap.clear();
+}
+
+// *****************************************************************************
+void SMEntityManager::GetEntitiesOfType(const cString & Type, EntityList & Entities)
+{
+	unsigned long hash = cHashedString::CalculateHash(Type);
+	EntityMap::iterator iter = m_EntityMap.find(hash);
+	if(iter == m_EntityMap.end())
+	{
+		Log_Write(ILogger::LT_WARNING, 1, "No entity of type " + Type);
+	}
+	else
+	{
+		Entities = iter->second;
+	}
 }

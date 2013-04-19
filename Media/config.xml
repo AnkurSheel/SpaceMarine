@@ -2,4 +2,6 @@
   <Player Sprite = "green.png" XPos ="16" YPos = "16" Width = "32" Height = "32" Collidable = "true" Speed = "150"></Player>
   <Rock Sprite = "rock.png" XPos ="10" YPos = "10" Width = "76" Height = "76" Collidable = "true"></Rock>
   <Woods Sprite = "woods.png" XPos ="10" YPos = "10" Width = "76" Height = "76" Collidable = "true"></Woods>
+  <MeleeSoldier Sprite = "red2.png" XPos ="16" YPos = "16" Width = "20" Height = "20" Speed = "50"></MeleeSoldier>
+  <RangedSoldier Sprite = "blue.png" XPos ="16" YPos = "16" Width = "20" Height = "20" Speed = "50"></RangedSoldier>
 </Config>

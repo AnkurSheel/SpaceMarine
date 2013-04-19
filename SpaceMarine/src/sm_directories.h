@@ -16,8 +16,9 @@ public:
 	Base::cString GetAssetsPath() const { return m_AssetsPath; }
 	Base::cString GetBackGroundSprites() const { return m_BackGroundSprites; }
 	Base::cString GetPlayerSprites() const { return m_PlayerSprites; }
-	Base::cString GetLevels() const { return m_Levels; }
 	Base::cString GetObjectSprites() const { return m_ObjectSprites; }
+	Base::cString GetEnemySprites() const { return m_EnemySprites; }
+	Base::cString GetLevels() const { return m_Levels; }
 
 public:
 	static SMDirectories Directories;
@@ -31,6 +32,7 @@ private:
 	Base::cString	m_BackGroundSprites;
 	Base::cString	m_PlayerSprites;
 	Base::cString	m_ObjectSprites;
+	Base::cString	m_EnemySprites;
 	Base::cString	m_Levels;
 };
 #endif // sm_directories_h__

@@ -1,19 +1,19 @@
 // *****************************************************************************
-//  sm_static_object   version:  1.0   Ankur Sheel  date: 2013/04/16
+//  sm_enemy   version:  1.0   Ankur Sheel  date: 2013/04/16
 // *****************************************************************************
 //  purpose:	
 // *****************************************************************************
-#ifndef sm_static_object_h__
-#define sm_static_object_h__
+#ifndef sm_enemy_h__
+#define sm_enemy_h__
 
 #include "sm_entity.h"
 
-class SMStaticObject
+class SMEnemy
 	: public SMEntity
 {
 public:
-	SMStaticObject(const Base::cString & Type, const Base::cString & Name);
-	~SMStaticObject();
+	SMEnemy(const Base::cString & Type, const Base::cString & Name);
+	~SMEnemy();
 	bool VInitialize();
 };
-#endif // sm_static_object_h__
+#endif // sm_enemy_h__

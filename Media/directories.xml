@@ -2,5 +2,6 @@
 	<BackgroundSprites>Sprites\BackGrounds\</BackgroundSprites>
   <PlayerSprites>Sprites\Player\</PlayerSprites>
   <ObjectsSprites>Sprites\Objects\</ObjectsSprites>
+  <EnemySprites>Sprites\Enemies\</EnemySprites>
   <Levels>Levels\</Levels>
 </Directories>

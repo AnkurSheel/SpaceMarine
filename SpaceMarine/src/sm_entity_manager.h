@@ -7,6 +7,7 @@
 #define sm_entity_manager_h__
 
 #include <map>
+#include <list>
 
 class SMEntity;
 class SMEntityFactory;
@@ -15,17 +16,16 @@ class SMEntityManager
 	: public Base::cNonCopyable
 {
 public:
-	typedef std::map<int, SMEntity * const > EntityMap;
+	typedef std::list<SMEntity * const > EntityList;
+	typedef std::map<unsigned long, EntityList> EntityMap;
 
 public:
 	SMEntity * RegisterEntity(const Base::cString & Type, const Base::cString & Name);
 	void UnRegisterEntity(SMEntity * const pEntity);
-	SMEntity * const GetEntityFromID(const int ID);
 	void Update(const float DeltaTime);
 	void Render(SDL_Surface * pDisplaySurface);
 	void Cleanup();
-	// return const reference to map to avoid overhead of copying the map
-	const EntityMap & GetEntityMap() { return m_EntityMap; }
+	void GetEntitiesOfType(const Base::cString & strType, EntityList & entities);
 
 public:
 	static SMEntityManager	EntityManager;
