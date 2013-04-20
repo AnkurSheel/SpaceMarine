@@ -20,11 +20,12 @@ public:
 	virtual void VUpdate(const float DeltaTime);
 	virtual void VRender(SDL_Surface * pDisplaySurface);
 	virtual void VCleanup();
+	virtual void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
 	int GetID() const { return m_ID; }
 	Base::cString GetName() const { return m_Name; }
 	Base::cString GetType() const { return m_Type.GetString(); }
 	unsigned long GetTypeHash() const { return m_Type.GetHash(); }
-	Base::cVector2 GetPos() const { return m_Pos; }
+	Base::cVector2 GetPos() const { return m_LevelPosition; }
 	void SetPos(const Base::cVector2 & Pos);
 	Base::cVector2 GetSize() const { return m_Size; }
 	const SMBounds * const GetBounds() { return m_pBounds; }
@@ -33,12 +34,13 @@ protected:
 	SMEntity(const Base::cString & Type, const Base::cString & SubType,
 		const Base::cString & Name);
 	bool Load(const Base::cString & SpriteDirectory);
+	void CheckCollisionInternal(const Base::cString & Type);
 
 protected:
 	Base::cString			m_Name;
 	Base::cHashedString		m_Type;
 	Base::cString			m_SubType;
-	Base::cVector2			m_Pos;
+	Base::cVector2			m_LevelPosition;
 	Base::cVector2			m_Size;
 	SDL_Surface *			m_pSurface;
 	SMBounds *				m_pBounds;

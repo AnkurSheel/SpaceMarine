@@ -17,7 +17,7 @@ public:
 	Base::cVector2 GetCenter() const { return m_Center; }
 	Base::cVector2 GetHalfExtents() const { return m_HalfExtents; }
 	static bool CheckCollision(const SMBounds * const pObjectA, 
-		const SMBounds * pObjectB, Base::cVector2 & PenetrationDistance);
+		const SMBounds * pObjectB, Base::cVector2 & PenentrationDistance);
 
 private:
 	void CalculateBounds(const Base::cVector2 & Min, const Base::cVector2 & Max);

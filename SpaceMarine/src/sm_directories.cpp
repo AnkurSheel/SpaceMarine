@@ -37,6 +37,7 @@ bool SMDirectories::Initialize(const Base::cString & AssetsPath,
 		m_ObjectSprites = m_AssetsPath + pXMLFile->VGetNodeValue("ObjectsSprites");
 		m_EnemySprites = m_AssetsPath + pXMLFile->VGetNodeValue("EnemySprites");
 		m_Levels = m_AssetsPath + pXMLFile->VGetNodeValue("Levels");
+		m_Fonts = m_AssetsPath + pXMLFile->VGetNodeValue("Fonts");
 	}
 	else
 	{

@@ -74,7 +74,7 @@ void SMEntityManager::Update(const float DeltaTime)
 	for (MapIter = m_EntityMap.begin(); MapIter != m_EntityMap.end(); MapIter++)
 	{
 		EntityList & List = (MapIter->second);
-		SMEntityManager::EntityList ::iterator ListIter;
+		EntityList ::iterator ListIter;
 		for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 		{
 			pEntity = *ListIter;
@@ -91,7 +91,7 @@ void SMEntityManager::Render(SDL_Surface * pDisplaySurface)
 	for (MapIter = m_EntityMap.begin(); MapIter != m_EntityMap.end(); MapIter++)
 	{
 		EntityList & List = (MapIter->second);
-		SMEntityManager::EntityList ::iterator ListIter;
+		EntityList::iterator ListIter;
 		for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 		{
 			pEntity = *ListIter;
@@ -109,7 +109,7 @@ void SMEntityManager::Cleanup()
 	for (MapIter = m_EntityMap.begin(); MapIter != m_EntityMap.end(); MapIter++)
 	{
 		List = (MapIter->second);
-		SMEntityManager::EntityList ::iterator ListIter;
+		EntityList::iterator ListIter;
 		for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 		{
 			pEntity = *ListIter;

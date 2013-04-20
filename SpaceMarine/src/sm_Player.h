@@ -8,6 +8,9 @@
 
 #include "sm_entity.h"
 
+typedef struct _TTF_Font TTF_Font;
+class SMCrosshair;
+
 class SMPlayer
 	: public SMEntity
 {
@@ -17,7 +20,22 @@ public:
 	~SMPlayer();
 	bool VInitialize();
 	void VUpdate(const float DeltaTime);
+	void VCleanup();
+	void VRender(SDL_Surface * pDisplaySurface);
+	void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
+
+private:
 	void CheckCollisions(const Base::cVector2 & PredictedPos);
+
+private:
+	int				m_Score;
+	Base::cString	m_ScoreText;
+	SDL_Surface *	m_pScoreSurface;
+	TTF_Font *		m_pFont;
+	SDL_Color		m_TextColor;
+	SMCrosshair *	m_pCrossHair;
+	float			m_Angle;
+	bool			m_bDirty;
 };
 
 #endif // sm_Player_h__

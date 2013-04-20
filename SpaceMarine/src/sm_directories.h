@@ -19,6 +19,7 @@ public:
 	Base::cString GetObjectSprites() const { return m_ObjectSprites; }
 	Base::cString GetEnemySprites() const { return m_EnemySprites; }
 	Base::cString GetLevels() const { return m_Levels; }
+	Base::cString GetFonts() const { return m_Fonts; }
 
 public:
 	static SMDirectories Directories;
@@ -34,5 +35,6 @@ private:
 	Base::cString	m_ObjectSprites;
 	Base::cString	m_EnemySprites;
 	Base::cString	m_Levels;
+	Base::cString	m_Fonts;
 };
 #endif // sm_directories_h__

@@ -9,6 +9,7 @@
 #include "sm_directories.h"
 #include "sm_level.h"
 #include "sm_camera.h"
+#include "sdl_ttf.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -77,6 +78,11 @@ bool SMGame::Initialize()
 	{
 		Log_Write(ILogger::LT_ERROR, 1, "Could not Initialize SDL");
 		return false;
+	}
+	if(TTF_Init() < 0 )
+	{
+		Log_Write(ILogger::LT_ERROR, 1, "Could not Initialize SDL TTF");
+		return false;    
 	}
 
 	if(CreateDisplaySurface() == false)
@@ -210,7 +216,6 @@ void SMGame::CreatePlayer()
 {
 	m_pPlayer = SMEntityManager::EntityManager.RegisterEntity("Player", "Player", "Player");
 	m_pPlayer->VInitialize();
-	m_pPlayer->SetPos(SMLevel::Level.GetPlayerSpawnPoint());
 }
 
 // *****************************************************************************

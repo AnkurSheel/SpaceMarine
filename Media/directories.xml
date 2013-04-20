@@ -4,4 +4,5 @@
   <ObjectsSprites>Sprites\Objects\</ObjectsSprites>
   <EnemySprites>Sprites\Enemies\</EnemySprites>
   <Levels>Levels\</Levels>
+  <Fonts>Fonts\</Fonts>
 </Directories>

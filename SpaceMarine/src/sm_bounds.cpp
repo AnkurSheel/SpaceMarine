@@ -45,9 +45,9 @@ void SMBounds::Transalate(const Base::cVector2 & DeltaPos)
 }
 
 // *****************************************************************************
-bool SMBounds::CheckCollision(const SMBounds * const pObjectA, const SMBounds * pObjectB, cVector2 & PenetrationDistance)
+bool SMBounds::CheckCollision(const SMBounds * const pObjectA, const SMBounds * pObjectB, cVector2 & PenentrationDistance)
 {
-	PenetrationDistance = cVector2::Zero();
+	PenentrationDistance = cVector2::Zero();
 	if(pObjectA == NULL || pObjectB == NULL)
 	{
 		return false;
@@ -66,7 +66,7 @@ bool SMBounds::CheckCollision(const SMBounds * const pObjectA, const SMBounds * 
 		cVector2 SmallestOverlap = Overlap.MinorAxis();
 		cVector2 PlaneNormal = (CenterDelta * SmallestOverlap).MajorAxis();
 
-		PenetrationDistance = Overlap * PlaneNormal;
+		PenentrationDistance = Overlap * PlaneNormal;
 	}
 	return Collides;
 }
