@@ -26,14 +26,17 @@ public:
 	Base::cString GetType() const { return m_Type.GetString(); }
 	unsigned long GetTypeHash() const { return m_Type.GetHash(); }
 	Base::cVector2 GetPos() const { return m_LevelPosition; }
-	void SetPos(const Base::cVector2 & Pos);
+	void SetLevelPosition(const Base::cVector2 & Pos);
 	Base::cVector2 GetSize() const { return m_Size; }
 	const SMBounds * const GetBounds() { return m_pBounds; }
+	bool GetDead() const { return m_Dead; }
+	void SetDead(const bool Dead) { m_Dead = Dead; }
 
 protected:
 	SMEntity(const Base::cString & Type, const Base::cString & SubType,
 		const Base::cString & Name);
 	bool Load(const Base::cString & SpriteDirectory);
+	virtual void VCheckCollisions(const Base::cVector2 & PredictedPos);
 	void CheckCollisionInternal(const Base::cString & Type);
 
 protected:
@@ -47,6 +50,7 @@ protected:
 	Base::cVector2			m_Speed;
 	Base::cVector2			m_SpritePos;
 	int						m_MaxSpeed;
+	bool					m_Dead;
 	
 private:
 	void SetID(const int ID);

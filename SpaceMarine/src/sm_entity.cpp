@@ -6,6 +6,7 @@
 #include "sm_config.h"
 #include <XMLFileIO.hxx>
 #include "sm_entity_manager.h"
+#include "sm_level.h"
 
 using namespace Utilities;
 using namespace Base;
@@ -19,6 +20,7 @@ SMEntity::SMEntity(const cString & Type, const cString & SubType, const cString 
 , m_SubType(SubType)
 , m_pSurface(NULL)
 , m_pBounds(NULL)
+, m_Dead(false)
 {
 	SetID(m_NextValidID);
 }
@@ -26,6 +28,7 @@ SMEntity::SMEntity(const cString & Type, const cString & SubType, const cString 
 // *****************************************************************************
 SMEntity::~SMEntity()
 {
+	VCleanup();
 }
 
 // *****************************************************************************
@@ -90,6 +93,19 @@ bool SMEntity::Initialize(const cString & FilePath, const int Width,
 // *****************************************************************************
 void SMEntity::VUpdate(const float DeltaTime)
 {
+	if (m_Dead)
+	{
+		return;
+	}
+
+	if(!m_Speed.IsZero())
+	{
+		cVector2 PredictedPos = m_LevelPosition + m_Speed * DeltaTime;
+		Clamp<float>(PredictedPos.x, 0, (SMLevel::Level.GetLevelSize().x - m_Size.x));
+		Clamp<float>(PredictedPos.y, 0, (SMLevel::Level.GetLevelSize().y - m_Size.y));
+		SetLevelPosition(PredictedPos);
+		VCheckCollisions(PredictedPos);
+	}
 }
 
 // *****************************************************************************
@@ -121,7 +137,7 @@ void SMEntity::CreateCollider()
 }
 
 // *****************************************************************************
-void SMEntity::SetPos(const cVector2 & Pos)
+void SMEntity::SetLevelPosition(const cVector2 & Pos)
 {
 	if(m_pBounds != NULL)
 	{
@@ -171,16 +187,23 @@ void SMEntity::CheckCollisionInternal(const cString & Type)
 	for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 	{
 		pEntity = *ListIter;
-		if(pEntity != NULL && this != pEntity && 
+		if(pEntity != NULL && this != pEntity && !pEntity->GetDead() &&
 			SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenentrationDistance))
 		{
 			VOnCollided(Type, PenentrationDistance);
+			pEntity->VOnCollided(m_Type.GetString(), PenentrationDistance);
 		}
 	}
 }
 
 // *****************************************************************************
 void SMEntity::VOnCollided(const cString & Type, const cVector2 & PenentrationDistance)
+{
+
+}
+
+// *****************************************************************************
+void SMEntity::VCheckCollisions(const Base::cVector2 & PredictedPos)
 {
 
 }

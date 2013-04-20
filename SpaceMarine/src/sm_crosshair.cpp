@@ -26,7 +26,6 @@ bool SMCrosshair::Initialize(const cString & FilePath, const cVector2 & Offset)
 	{
 		return false;
 	}
-	m_Offset = Offset;
 	return true;
 }
 
@@ -41,17 +40,18 @@ void SMCrosshair::Render(SDL_Surface * pDisplaySurface)
 }
 
 // *****************************************************************************
-void SMCrosshair::UpdatePosition(const cVector2 & ParentPosition, const float Angle)
+void SMCrosshair::UpdatePosition(const Base::cVector2 & ParentPosition, const Base::cVector2 & Direction)
 {
-	float s = sin(Angle);
-	float c = cos(Angle);
+	//float s = sin(Angle);
+	//float c = cos(Angle);
 
-	m_Position = m_Offset;
+	//m_Position = m_Offset;
 
-	// rotate point
-	float Xnew = m_Position.x * c - m_Position.y * s;
-	float Ynew = m_Position.y * c - m_Position.x * s;
+	//// rotate point
+	//float Xnew = m_Position.x * c - m_Position.y * s;
+	//float Ynew = -m_Position.y * c + m_Position.x * s;
 
-	m_Position.x = Xnew + ParentPosition.x;
-	m_Position.y = Ynew + ParentPosition.y;
+	//m_Position.x = Xnew + ParentPosition.x;
+	//m_Position.y = Ynew + ParentPosition.y;
+	m_Position = ParentPosition - cVector2(16, 16) + Direction * 125;
 }

@@ -13,9 +13,18 @@ inline cVector2::cVector2( const float fX, const float fY )
 }
 
 // *****************************************************************************
-inline Base::cVector2 cVector2::Zero()
+inline cVector2 cVector2::Zero()
 {
 	return cVector2(0.0f, 0.0f);
+}
+
+// *****************************************************************************
+inline cVector2 cVector2::GetDirection(const float fAngle)
+{
+	cVector2 Dir;
+	Dir.x = cos(fAngle);
+	Dir.y = sin(fAngle);
+	return Dir;
 }
 
 // *****************************************************************************
@@ -55,13 +64,13 @@ inline float cVector2::Dot( const cVector2 & inVec ) const
 }
 
 // *****************************************************************************
-inline Base::cVector2 cVector2::PerpendicularAboutXAxis() const
+inline cVector2 cVector2::PerpendicularAboutXAxis() const
 {
 	return cVector2(y, -x);
 }
 
 // *****************************************************************************
-inline Base::cVector2 cVector2::PerpendicularAboutYAxis() const
+inline cVector2 cVector2::PerpendicularAboutYAxis() const
 {
 	return cVector2(-y, x);
 }
@@ -88,7 +97,7 @@ inline void cVector2::Reflect( const cVector2 & norm )
 }
 
 // *****************************************************************************
-inline Base::cVector2 cVector2::GetReverse() const
+inline cVector2 cVector2::GetReverse() const
 {
 	return cVector2(-x, -y);
 }
@@ -213,7 +222,7 @@ inline const float cVector2::operator[](const unsigned int i) const
 }
 
 // *****************************************************************************
-Base::cVector2 operator*( const cVector2 & inVec1, const float fVal )
+cVector2 operator*( const cVector2 & inVec1, const float fVal )
 {
 	cVector2 result(inVec1);
 	result *= fVal;
@@ -221,7 +230,7 @@ Base::cVector2 operator*( const cVector2 & inVec1, const float fVal )
 }
 
 // *****************************************************************************
-Base::cVector2 operator*( const float fVal, const cVector2 & inVec1 )
+cVector2 operator*( const float fVal, const cVector2 & inVec1 )
 {
 	cVector2 result(inVec1);
 	result *= fVal;
@@ -229,7 +238,7 @@ Base::cVector2 operator*( const float fVal, const cVector2 & inVec1 )
 }
 
 // *****************************************************************************
-Base::cVector2 operator/( const cVector2 & inVec1, const float fVal )
+cVector2 operator/( const cVector2 & inVec1, const float fVal )
 {
 	cVector2 result(inVec1);
 	result /= fVal;
@@ -237,7 +246,7 @@ Base::cVector2 operator/( const cVector2 & inVec1, const float fVal )
 }
 
 // *****************************************************************************
-Base::cVector2 operator-( const cVector2 & inVec1, const cVector2 & inVec2 )
+cVector2 operator-( const cVector2 & inVec1, const cVector2 & inVec2 )
 {
 	cVector2 result(inVec1);
 	result -= inVec2;
@@ -245,7 +254,7 @@ Base::cVector2 operator-( const cVector2 & inVec1, const cVector2 & inVec2 )
 }
 
 // *****************************************************************************
-Base::cVector2 operator+( const cVector2 & inVec1, const cVector2 & inVec2 )
+cVector2 operator+( const cVector2 & inVec1, const cVector2 & inVec2 )
 {
 	cVector2 result(inVec1);
 	result += inVec2;
@@ -253,7 +262,7 @@ Base::cVector2 operator+( const cVector2 & inVec1, const cVector2 & inVec2 )
 }
 
 // *****************************************************************************
-Base::cVector2 operator*(const cVector2 & inVec1, const cVector2 & inVec2)
+cVector2 operator*(const cVector2 & inVec1, const cVector2 & inVec2)
 {
 	cVector2 result(inVec1);
 	result *= inVec2;

@@ -156,8 +156,8 @@ namespace Base
 		bool operator!=(const cVector2 & inVec) const;
 		float & operator[](const unsigned int i);
 		const float operator[](const unsigned int i) const;
-
 		static cVector2 Zero();
+		static cVector2 GetDirection(const float fAngle);
 
 	public:
 		float	x;	/*!< X component of Vector2 */

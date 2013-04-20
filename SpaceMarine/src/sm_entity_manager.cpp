@@ -49,21 +49,13 @@ SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString &
 		}
 	}
 	return pEntity;
-
-
 }
 
 // *****************************************************************************
 void SMEntityManager::UnRegisterEntity(SMEntity * const pEntity)
 {
-	EntityMap::iterator EntityIter = m_EntityMap.find(pEntity->GetTypeHash());
-	
-	EntityList & List = EntityIter->second;
-	List.remove(pEntity);
-	if(List.empty())
-	{
-		m_EntityMap.erase(pEntity->GetTypeHash());
-	}
+	m_DeletedEntities.push_back(pEntity);
+	pEntity->SetDead(true);
 }
 
 // *****************************************************************************
@@ -81,6 +73,7 @@ void SMEntityManager::Update(const float DeltaTime)
 			pEntity->VUpdate(DeltaTime);
 		}
 	}
+	RemoveDeletedEntities();
 }
 
 // *****************************************************************************
@@ -133,4 +126,24 @@ void SMEntityManager::GetEntitiesOfType(const cString & Type, EntityList & Entit
 	{
 		Entities = iter->second;
 	}
+}
+
+// *****************************************************************************
+void SMEntityManager::RemoveDeletedEntities()
+{
+	EntityList::iterator ListIter;
+	for(ListIter = m_DeletedEntities.begin(); ListIter != m_DeletedEntities.end(); ListIter++)
+	{
+		SMEntity * pEntity = (*ListIter);
+		EntityMap::iterator EntityIter = m_EntityMap.find(pEntity->GetTypeHash());
+
+		EntityList & List = EntityIter->second;
+		List.remove(pEntity);
+		if(List.empty())
+		{
+			m_EntityMap.erase(pEntity->GetTypeHash());
+		}
+		SafeDelete(&pEntity);
+	}
+	m_DeletedEntities.clear();
 }

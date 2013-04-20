@@ -8,9 +8,12 @@
 #include <sdl_ttf.h>
 #include "sm_surface.h"
 #include "sm_crosshair.h"
+#include "sm_bullet.h"
 
 using namespace Base;
 using namespace Utilities;
+
+SMPlayer * SMPlayer::m_pInstance = NULL;
 
 // *****************************************************************************
 SMPlayer::SMPlayer(const cString & Type, const cString & SubType, const cString & Name) 
@@ -21,6 +24,7 @@ SMPlayer::SMPlayer(const cString & Type, const cString & SubType, const cString 
 	, m_pCrossHair(NULL)
 	, m_Angle(0)
 	, m_bDirty(false)
+	, m_CanFire(false)
 {
 	m_TextColor.r = 255;
 	m_TextColor.g = 255;
@@ -47,60 +51,80 @@ bool SMPlayer::VInitialize()
 	m_pCrossHair = DEBUG_NEW SMCrosshair();
 	m_pCrossHair->Initialize(SMDirectories::Directories.GetPlayerSprites() + "crosshairs.png",
 		cVector2(100, 0));
-	SetPos(SMLevel::Level.GetPlayerSpawnPoint());
+	SetLevelPosition(SMLevel::Level.GetPlayerSpawnPoint());
+	m_Direction = cVector2::GetDirection(m_Angle);
 	m_bDirty = true;
+	m_CanFire = true;
+
+	m_pInstance = this;
 	return true;
 }
 
 // *****************************************************************************
 void SMPlayer::VUpdate(const float DeltaTime)
 {
+	if (m_Dead)
+	{
+		return;
+	}
+
 	m_Speed = cVector2::Zero();
 	if (SMControls::Keys.IsKeyPressed(SDLK_DOWN))
 	{
-		m_Speed.y = static_cast<float>(m_MaxSpeed);
+		m_Speed = m_Direction * m_MaxSpeed;
+		m_Speed.NegTo();
+		m_bDirty = true;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_UP))
 	{
-		m_Speed.y = static_cast<float>(-m_MaxSpeed);
+		m_Speed = m_Direction * m_MaxSpeed;
+		m_bDirty = true;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_RIGHT))
 	{
-		m_Speed.x = static_cast<float>(m_MaxSpeed);
+		m_Angle += DegtoRad(1);
+		ClampToTwoPi(m_Angle);
+		m_Direction = cVector2::GetDirection(m_Angle);
+		m_bDirty = true;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_LEFT))
 	{
-		m_Speed.x = static_cast<float>(-m_MaxSpeed);
-	}
-	if(SMControls::Keys.IsKeyPressed(SDLK_q))
-	{
 		m_Angle -= DegtoRad(1);
 		ClampToTwoPi(m_Angle);
+		m_Direction = cVector2::GetDirection(m_Angle);
 		m_bDirty = true;
 	}
-	if(SMControls::Keys.IsKeyPressed(SDLK_a))
+	if(m_CanFire && (SMControls::Keys.IsKeyPressed(SDLK_SPACE)))
 	{
-		m_Angle += DegtoRad(1);
-		ClampToTwoPi(m_Angle);
-		m_bDirty = true;
+		m_CanFire = false;
+		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity("Projectile", "Bullet", "Bullet");
+		if (pEntity)
+		{
+			SMBullet * pBullet = dynamic_cast<SMBullet *>(pEntity);
+			pBullet->Initialize(m_LevelPosition, m_Direction);
+			m_LastFireTime = pBullet->GetFireDelay();
+		}
 	}
-	if(!m_Speed.IsZero())
+
+	if(m_LastFireTime > 0.0f)
 	{
-		m_bDirty = true;
-		cVector2 PredictedPos = m_LevelPosition + m_Speed * DeltaTime;
-		Clamp<float>(PredictedPos.x, 0, (SMLevel::Level.GetLevelSize().x - m_Size.x));
-		Clamp<float>(PredictedPos.y, 0, (SMLevel::Level.GetLevelSize().y - m_Size.y));
-		SetPos(PredictedPos);
-		CheckCollisions(PredictedPos);
+		m_LastFireTime -= DeltaTime;
+		if(m_LastFireTime <= 0.0f)
+		{
+			m_CanFire = true;
+		}
 	}
+
 	if (m_bDirty)
 	{
 		m_bDirty = false;
 		if (m_pCrossHair)
 		{
-			m_pCrossHair->UpdatePosition(m_LevelPosition, m_Angle);
+			m_pCrossHair->UpdatePosition(m_LevelPosition, m_Direction);
 		}
 	}
+
+	SMEntity::VUpdate(DeltaTime);
 }
 
 // *****************************************************************************
@@ -132,8 +156,9 @@ void SMPlayer::VCleanup()
 }
 
 // *****************************************************************************
-void SMPlayer::CheckCollisions(const cVector2 & PredictedPos)
+void SMPlayer::VCheckCollisions(const cVector2 & PredictedPos)
 {
+	SMEntity::VCheckCollisions(PredictedPos);
 	CheckCollisionInternal("StaticObject");
 	CheckCollisionInternal("Enemy");
 }
@@ -142,12 +167,22 @@ void SMPlayer::CheckCollisions(const cVector2 & PredictedPos)
 void SMPlayer::VOnCollided(const cString & Type, const cVector2 & PenentrationDistance)
 {
 	SMEntity::VOnCollided(Type, PenentrationDistance);
-	if (Type.CompareInsensitive("StaticObjects"))
+	if (Type.CompareInsensitive("StaticObject"))
 	{
 		cVector2 PredictedPos = m_LevelPosition + PenentrationDistance;
-		SetPos(PredictedPos);
+		SetLevelPosition(PredictedPos);
 	}
 	if (Type.CompareInsensitive("Enemy"))
 	{
+	}
+}
+
+// *****************************************************************************
+void SMPlayer::AddScore(const int Score)
+{
+	if (m_pInstance != NULL)
+	{
+		m_pInstance->m_Score += Score;
+		m_pInstance->m_ScoreText = cString(100, "Score : %d", m_pInstance->m_Score);
 	}
 }

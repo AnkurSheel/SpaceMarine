@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sm_bounds.cpp" />
+    <ClCompile Include="src\sm_bullet.cpp" />
     <ClCompile Include="src\sm_camera.cpp" />
     <ClCompile Include="src\sm_config.cpp" />
     <ClCompile Include="src\sm_controls.cpp" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="src\includes.h" />
     <ClInclude Include="src\sm_bounds.h" />
+    <ClInclude Include="src\sm_bullet.h" />
     <ClInclude Include="src\sm_camera.h" />
     <ClInclude Include="src\sm_config.h" />
     <ClInclude Include="src\sm_controls.h" />

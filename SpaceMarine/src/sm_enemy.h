@@ -16,5 +16,10 @@ public:
 		const Base::cString & Name);
 	~SMEnemy();
 	bool VInitialize();
+	void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
+
+private:
+	int	m_ScoreGiven;
+
 };
 #endif // sm_enemy_h__

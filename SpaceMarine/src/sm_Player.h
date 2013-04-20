@@ -23,9 +23,9 @@ public:
 	void VCleanup();
 	void VRender(SDL_Surface * pDisplaySurface);
 	void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
-
-private:
-	void CheckCollisions(const Base::cVector2 & PredictedPos);
+	static void AddScore(const int Score);
+protected:
+	void VCheckCollisions(const Base::cVector2 & PredictedPos);
 
 private:
 	int				m_Score;
@@ -36,6 +36,10 @@ private:
 	SMCrosshair *	m_pCrossHair;
 	float			m_Angle;
 	bool			m_bDirty;
+	Base::cVector2	m_Direction;
+	bool			m_CanFire;
+	float			m_LastFireTime;
+	static SMPlayer * m_pInstance;
 };
 
 #endif // sm_Player_h__

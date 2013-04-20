@@ -16,11 +16,10 @@ public:
 	~SMCrosshair();
 	bool Initialize(const Base::cString & FilePath, const Base::cVector2 & Offset);
 	void Render(SDL_Surface * pDisplaySurface);
-	void UpdatePosition(const Base::cVector2 & ParentPosition, const float Angle);
+	void UpdatePosition(const Base::cVector2 & ParentPosition, const Base::cVector2 & Direction);
 
 private:
 	SDL_Surface *	m_pSurface;
 	Base::cVector2	m_Position;
-	Base::cVector2	m_Offset;
 };
 #endif // sm_crosshair_h__

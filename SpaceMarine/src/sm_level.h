@@ -26,6 +26,7 @@ public:
 	Base::cVector2 GetLevelSize() const { return m_LevelSize; }
 	Base::cVector2 GetPlayerSpawnPoint() const { return m_PlayerSpawnPoint; }
 	void Update(const float DeltaTime);
+	void AddEnemy();
 
 public:
 	static SMLevel Level;
@@ -42,7 +43,6 @@ private:
 	SMLevel();
 	~SMLevel();
 	void LoadStaticObjects(const Utilities::IXMLFileIO * const pXMLFile);
-	void AddEnemy();
 
 private:
 	Base::cString					m_Background;
