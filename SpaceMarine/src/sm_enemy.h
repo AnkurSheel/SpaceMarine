@@ -16,7 +16,9 @@ public:
 		const Base::cString & Name);
 	~SMEnemy();
 	bool VInitialize();
-	void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
+	void VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance);
+	void VCheckCollisions(const Base::cVector2 & PredictedPos);
+	bool VTakeDamage(const int Amount);
 
 private:
 	int	m_ScoreGiven;

@@ -17,12 +17,14 @@ public:
 	~SMBullet();
 	bool VInitialize();
 	void Initialize(const Base::cVector2 & ParentPosition, const Base::cVector2 & Direction);
-	virtual void VCheckCollisions(const Base::cVector2 & PredictedPos);
-	virtual void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
+	void VCheckCollisions(const Base::cVector2 & PredictedPos);
+	void VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance);
 	float GetFireDelay() const { return m_FireDelay; }
-	virtual void VUpdate(const float DeltaTime);
+	void VUpdate(const float DeltaTime);
+	int GetDamage() const { return m_Damage; }
 
 private:
 	float	m_FireDelay;
+	int		m_Damage;
 };
 #endif // sm_bullet_h__

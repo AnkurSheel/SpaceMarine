@@ -32,22 +32,36 @@ bool SMEnemy::VInitialize()
 		return false;
 	}
 	m_ScoreGiven = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Score");
+	return true;
 }
 
 // *****************************************************************************
-void SMEnemy::VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance)
+void SMEnemy::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance)
 {
-	SMEntity::VOnCollided(Type, PenentrationDistance);
-	if (Type.CompareInsensitive("StaticObject"))
+	SMEntity::VOnCollided(pEntity, PenentrationDistance);
+	if (pEntity->GetType().CompareInsensitive("StaticObject"))
 	{
 		cVector2 PredictedPos = m_LevelPosition + PenentrationDistance;
 		SetLevelPosition(PredictedPos);
 	}
-	else if (Type.CompareInsensitive("Projectile"))
+}
+
+// *****************************************************************************
+void SMEnemy::VCheckCollisions(const Base::cVector2 & PredictedPos)
+{
+	SMEntity::VCheckCollisions(PredictedPos);
+	CheckCollisionInternal("StaticObject");
+	CheckCollisionInternal("Bullet");
+}
+
+// *****************************************************************************
+bool SMEnemy::VTakeDamage(const int Amount)
+{
+	if(SMEntity::VTakeDamage(Amount))
 	{
-		SMEntityManager::EntityManager.UnRegisterEntity((this));
 		SMLevel::Level.AddEnemy();
 		SMPlayer::AddScore(m_ScoreGiven);
+		return true;
 	}
-
+	return false;
 }

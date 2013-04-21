@@ -20,7 +20,7 @@ public:
 	virtual void VUpdate(const float DeltaTime);
 	virtual void VRender(SDL_Surface * pDisplaySurface);
 	virtual void VCleanup();
-	virtual void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
+	virtual void VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance);
 	int GetID() const { return m_ID; }
 	Base::cString GetName() const { return m_Name; }
 	Base::cString GetType() const { return m_Type.GetString(); }
@@ -29,8 +29,9 @@ public:
 	void SetLevelPosition(const Base::cVector2 & Pos);
 	Base::cVector2 GetSize() const { return m_Size; }
 	const SMBounds * const GetBounds() { return m_pBounds; }
-	bool GetDead() const { return m_Dead; }
-	void SetDead(const bool Dead) { m_Dead = Dead; }
+	bool GetDead() const { return (m_Health <= 0); }
+	void SetDead() { m_Health = 0; }
+	virtual bool VTakeDamage(const int Amount);
 
 protected:
 	SMEntity(const Base::cString & Type, const Base::cString & SubType,
@@ -38,7 +39,7 @@ protected:
 	bool Load(const Base::cString & SpriteDirectory);
 	virtual void VCheckCollisions(const Base::cVector2 & PredictedPos);
 	void CheckCollisionInternal(const Base::cString & Type);
-
+	
 protected:
 	Base::cString			m_Name;
 	Base::cHashedString		m_Type;
@@ -50,8 +51,8 @@ protected:
 	Base::cVector2			m_Speed;
 	Base::cVector2			m_SpritePos;
 	int						m_MaxSpeed;
-	bool					m_Dead;
-	
+	int						m_Health;
+
 private:
 	void SetID(const int ID);
 	void CreateCollider();

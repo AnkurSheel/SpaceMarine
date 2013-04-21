@@ -1,8 +1,8 @@
 <Config>
-  <Player Sprite = "green.png" XPos ="16" YPos = "16" Width = "32" Height = "32" Collidable = "true" Speed = "150"></Player>
+  <Player Sprite = "green.png" XPos ="16" YPos = "16" Width = "32" Height = "32" Collidable = "true" Speed = "150" Health ="100"></Player>
   <Rock Sprite = "rock.png" XPos ="10" YPos = "10" Width = "76" Height = "76" Collidable = "true"></Rock>
   <Woods Sprite = "woods.png" XPos ="10" YPos = "10" Width = "76" Height = "76" Collidable = "true"></Woods>
-  <MeleeSoldier Sprite = "enemy1.png" Collidable = "true" Speed = "50" Score ="10"></MeleeSoldier>
-  <RangedSoldier Sprite = "enemy2.png" Collidable = "true" Speed = "50" Score ="50"></RangedSoldier>
-  <Bullet Sprite = "bullet.png" Collidable = "true" Speed = "80" FireDelay ="700"></Bullet>
+  <MeleeSoldier Sprite = "enemy1.png" Collidable = "true" Speed = "50" Score ="10" Health ="10"></MeleeSoldier>
+  <RangedSoldier Sprite = "enemy2.png" Collidable = "true" Speed = "50" Score ="50" Health ="10"></RangedSoldier>
+  <Bullet Sprite = "bullet.png" Collidable = "true" Speed = "400" FireDelay ="400" Damage = "10"></Bullet>
 </Config>

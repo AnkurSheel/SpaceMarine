@@ -22,7 +22,7 @@ public:
 	void VUpdate(const float DeltaTime);
 	void VCleanup();
 	void VRender(SDL_Surface * pDisplaySurface);
-	void VOnCollided(const Base::cString & Type, const Base::cVector2 & PenentrationDistance);
+	void VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance);
 	static void AddScore(const int Score);
 protected:
 	void VCheckCollisions(const Base::cVector2 & PredictedPos);
@@ -39,6 +39,8 @@ private:
 	Base::cVector2	m_Direction;
 	bool			m_CanFire;
 	float			m_LastFireTime;
+	Base::cString	m_HealthText;
+	SDL_Surface *	m_pHealthSurface;
 	static SMPlayer * m_pInstance;
 };
 

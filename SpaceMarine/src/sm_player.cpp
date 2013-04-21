@@ -9,6 +9,7 @@
 #include "sm_surface.h"
 #include "sm_crosshair.h"
 #include "sm_bullet.h"
+#include "sm_game.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -20,6 +21,7 @@ SMPlayer::SMPlayer(const cString & Type, const cString & SubType, const cString 
 	: SMEntity(Type, SubType, Name)
 	, m_Score(0)
 	, m_pScoreSurface(NULL)
+	, m_pHealthSurface(NULL)
 	, m_pFont(NULL)
 	, m_pCrossHair(NULL)
 	, m_Angle(0)
@@ -47,6 +49,7 @@ bool SMPlayer::VInitialize()
 	cString Path = SMDirectories::Directories.GetFonts() + "score.ttf";
 	m_pFont = TTF_OpenFont(Path.GetData(), 18);
 	m_ScoreText = cString(100, "Score : %d", m_Score);
+	m_HealthText = cString(100, "Health : %d", m_Health);
 
 	m_pCrossHair = DEBUG_NEW SMCrosshair();
 	m_pCrossHair->Initialize(SMDirectories::Directories.GetPlayerSprites() + "crosshairs.png",
@@ -63,7 +66,7 @@ bool SMPlayer::VInitialize()
 // *****************************************************************************
 void SMPlayer::VUpdate(const float DeltaTime)
 {
-	if (m_Dead)
+	if (GetDead())
 	{
 		return;
 	}
@@ -134,8 +137,12 @@ void SMPlayer::VRender(SDL_Surface * pDisplaySurface)
 	if (m_pFont)
 	{
 		m_pScoreSurface = TTF_RenderText_Solid(m_pFont, m_ScoreText.GetData(), m_TextColor);
+		m_pHealthSurface = TTF_RenderText_Solid(m_pFont, m_HealthText.GetData(), m_TextColor);
+
+		SMSurface::OnDraw(pDisplaySurface, m_pScoreSurface, 0, 0);
+		SMSurface::OnDraw(pDisplaySurface, m_pHealthSurface, SMGame::GetScreenSize().x - m_pHealthSurface->w, 0);
 	}
-	SMSurface::OnDraw(pDisplaySurface, m_pScoreSurface, 0, 0);
+	
 	if (m_pCrossHair)
 	{
 		m_pCrossHair->Render(pDisplaySurface);
@@ -152,6 +159,7 @@ void SMPlayer::VCleanup()
 	}
 	SafeDelete(&m_pCrossHair);
 	SafeFreeSurface(&m_pScoreSurface);
+	SafeFreeSurface(&m_pHealthSurface);
 	SMEntity::VCleanup();
 }
 
@@ -164,15 +172,15 @@ void SMPlayer::VCheckCollisions(const cVector2 & PredictedPos)
 }
 
 // *****************************************************************************
-void SMPlayer::VOnCollided(const cString & Type, const cVector2 & PenentrationDistance)
+void SMPlayer::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance)
 {
-	SMEntity::VOnCollided(Type, PenentrationDistance);
-	if (Type.CompareInsensitive("StaticObject"))
+	SMEntity::VOnCollided(pEntity, PenentrationDistance);
+	if (pEntity->GetType().CompareInsensitive("StaticObject"))
 	{
 		cVector2 PredictedPos = m_LevelPosition + PenentrationDistance;
 		SetLevelPosition(PredictedPos);
 	}
-	if (Type.CompareInsensitive("Enemy"))
+	if (pEntity->GetType().CompareInsensitive("Enemy"))
 	{
 	}
 }

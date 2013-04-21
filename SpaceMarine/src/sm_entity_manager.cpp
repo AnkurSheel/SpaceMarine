@@ -55,7 +55,7 @@ SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString &
 void SMEntityManager::UnRegisterEntity(SMEntity * const pEntity)
 {
 	m_DeletedEntities.push_back(pEntity);
-	pEntity->SetDead(true);
+	pEntity->SetDead();
 }
 
 // *****************************************************************************
@@ -136,14 +136,16 @@ void SMEntityManager::RemoveDeletedEntities()
 	{
 		SMEntity * pEntity = (*ListIter);
 		EntityMap::iterator EntityIter = m_EntityMap.find(pEntity->GetTypeHash());
-
-		EntityList & List = EntityIter->second;
-		List.remove(pEntity);
-		if(List.empty())
+		if (EntityIter != m_EntityMap.end())
 		{
-			m_EntityMap.erase(pEntity->GetTypeHash());
+			EntityList & List = EntityIter->second;
+			List.remove(pEntity);
+			if(List.empty())
+			{
+				m_EntityMap.erase(pEntity->GetTypeHash());
+			}
+			SafeDelete(&pEntity);
 		}
-		SafeDelete(&pEntity);
 	}
 	m_DeletedEntities.clear();
 }

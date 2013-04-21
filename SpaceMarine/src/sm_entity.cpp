@@ -20,7 +20,7 @@ SMEntity::SMEntity(const cString & Type, const cString & SubType, const cString 
 , m_SubType(SubType)
 , m_pSurface(NULL)
 , m_pBounds(NULL)
-, m_Dead(false)
+, m_Health(0)
 {
 	SetID(m_NextValidID);
 }
@@ -93,7 +93,7 @@ bool SMEntity::Initialize(const cString & FilePath, const int Width,
 // *****************************************************************************
 void SMEntity::VUpdate(const float DeltaTime)
 {
-	if (m_Dead)
+	if (GetDead())
 	{
 		return;
 	}
@@ -104,7 +104,6 @@ void SMEntity::VUpdate(const float DeltaTime)
 		Clamp<float>(PredictedPos.x, 0, (SMLevel::Level.GetLevelSize().x - m_Size.x));
 		Clamp<float>(PredictedPos.y, 0, (SMLevel::Level.GetLevelSize().y - m_Size.y));
 		SetLevelPosition(PredictedPos);
-		VCheckCollisions(PredictedPos);
 	}
 }
 
@@ -144,6 +143,7 @@ void SMEntity::SetLevelPosition(const cVector2 & Pos)
 		m_pBounds->Transalate(Pos - m_LevelPosition);
 	}
 	m_LevelPosition = Pos;
+	VCheckCollisions(m_LevelPosition);
 
 }
 
@@ -163,6 +163,12 @@ bool SMEntity::Load(const cString & SpriteDirectory)
 	int Width = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Width");
 	int Height = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Height");
 	bool Collidable = SMConfig::GetConfigLoader()->VGetNodeAttributeAsBool(m_SubType, "Collidable");
+	m_Health = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Health");
+
+	if (m_Health == 0)
+	{
+		m_Health = MaxInt;
+	}
 
 	if (Width == 0 || Height == 0)
 	{
@@ -190,14 +196,14 @@ void SMEntity::CheckCollisionInternal(const cString & Type)
 		if(pEntity != NULL && this != pEntity && !pEntity->GetDead() &&
 			SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenentrationDistance))
 		{
-			VOnCollided(Type, PenentrationDistance);
-			pEntity->VOnCollided(m_Type.GetString(), PenentrationDistance);
+			VOnCollided(pEntity, PenentrationDistance);
+			pEntity->VOnCollided(this, PenentrationDistance);
 		}
 	}
 }
 
 // *****************************************************************************
-void SMEntity::VOnCollided(const cString & Type, const cVector2 & PenentrationDistance)
+void SMEntity::VOnCollided(SMEntity * const pEntity, const cVector2 & PenentrationDistance)
 {
 
 }
@@ -206,4 +212,19 @@ void SMEntity::VOnCollided(const cString & Type, const cVector2 & PenentrationDi
 void SMEntity::VCheckCollisions(const Base::cVector2 & PredictedPos)
 {
 
+}
+
+// *****************************************************************************
+bool SMEntity::VTakeDamage(const int Amount)
+{
+	if (GetDead())
+	{
+		return false;
+	}
+	m_Health -= Amount;
+	if (GetDead())
+	{
+		SMEntityManager::EntityManager.UnRegisterEntity(this);
+	}
+	return GetDead();
 }

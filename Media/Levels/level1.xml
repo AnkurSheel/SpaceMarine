@@ -2,26 +2,26 @@
   <Level BackGround ="dirt.png" Width ="1000" Height = "1000"></Level>
   <Player SpawnPointX ="410" SpawnPointY ="160" ></Player>
   <StaticObjects>
-    <StaticObject id ="1" Type ="rock" XPos ="50" YPos ="50"></StaticObject>
-    <StaticObject id ="2" Type ="rock" XPos ="150" YPos ="250"></StaticObject>
-    <StaticObject id ="3" Type ="rock" XPos ="250" YPos ="450"></StaticObject>
-    <StaticObject id ="4" Type ="rock" XPos ="350" YPos ="650"></StaticObject>
-    <StaticObject id ="5" Type ="rock" XPos ="450" YPos ="850"></StaticObject>
-    <StaticObject id ="6" Type ="rock" XPos ="550" YPos ="50"></StaticObject>
-    <StaticObject id ="7" Type ="rock" XPos ="650" YPos ="250"></StaticObject>
-    <StaticObject id ="8" Type ="rock" XPos ="750" YPos ="450"></StaticObject>
-    <StaticObject id ="9" Type ="rock" XPos ="850" YPos ="650"></StaticObject>
-    <StaticObject id ="10" Type ="rock" XPos ="100" YPos ="850"></StaticObject>
-    <StaticObject id ="11" Type ="woods" XPos ="200" YPos ="50"></StaticObject>
-    <StaticObject id ="12" Type ="woods" XPos ="300" YPos ="250"></StaticObject>
-    <StaticObject id ="13" Type ="woods" XPos ="400" YPos ="450"></StaticObject>
-    <StaticObject id ="14" Type ="woods" XPos ="500" YPos ="650"></StaticObject>
-    <StaticObject id ="15" Type ="woods" XPos ="600" YPos ="850"></StaticObject>
-    <StaticObject id ="16" Type ="woods" XPos ="700" YPos ="50"></StaticObject>
-    <StaticObject id ="17" Type ="woods" XPos ="800" YPos ="250"></StaticObject>
-    <StaticObject id ="18" Type ="woods" XPos ="50" YPos ="450"></StaticObject>
-    <StaticObject id ="19" Type ="woods" XPos ="150" YPos ="650"></StaticObject>
-    <StaticObject id ="20" Type ="woods" XPos ="250" YPos ="850"></StaticObject>
+    <StaticObject id ="1" Type ="Rock" XPos ="50" YPos ="50"></StaticObject>
+    <StaticObject id ="2" Type ="Rock" XPos ="150" YPos ="250"></StaticObject>
+    <StaticObject id ="3" Type ="Rock" XPos ="250" YPos ="450"></StaticObject>
+    <StaticObject id ="4" Type ="Rock" XPos ="350" YPos ="650"></StaticObject>
+    <StaticObject id ="5" Type ="Rock" XPos ="450" YPos ="850"></StaticObject>
+    <StaticObject id ="6" Type ="Rock" XPos ="550" YPos ="50"></StaticObject>
+    <StaticObject id ="7" Type ="Rock" XPos ="650" YPos ="250"></StaticObject>
+    <StaticObject id ="8" Type ="Rock" XPos ="750" YPos ="450"></StaticObject>
+    <StaticObject id ="9" Type ="Rock" XPos ="850" YPos ="650"></StaticObject>
+    <StaticObject id ="10" Type ="Rock" XPos ="100" YPos ="850"></StaticObject>
+    <StaticObject id ="11" Type ="Woods" XPos ="200" YPos ="50"></StaticObject>
+    <StaticObject id ="12" Type ="Woods" XPos ="300" YPos ="250"></StaticObject>
+    <StaticObject id ="13" Type ="Woods" XPos ="400" YPos ="450"></StaticObject>
+    <StaticObject id ="14" Type ="Woods" XPos ="500" YPos ="650"></StaticObject>
+    <StaticObject id ="15" Type ="Woods" XPos ="600" YPos ="850"></StaticObject>
+    <StaticObject id ="16" Type ="Woods" XPos ="700" YPos ="50"></StaticObject>
+    <StaticObject id ="17" Type ="Woods" XPos ="800" YPos ="250"></StaticObject>
+    <StaticObject id ="18" Type ="Woods" XPos ="50" YPos ="450"></StaticObject>
+    <StaticObject id ="19" Type ="Woods" XPos ="150" YPos ="650"></StaticObject>
+    <StaticObject id ="20" Type ="Woods" XPos ="250" YPos ="850"></StaticObject>
   </StaticObjects>
   <Enemies Max ="1000" Initial ="20" SpawnInterval ="100">
     <Enemy id = "1" Type ="MeleeSoldier" Weight = "50"></Enemy>
