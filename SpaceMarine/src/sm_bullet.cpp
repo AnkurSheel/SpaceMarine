@@ -12,6 +12,7 @@ using namespace Base;
 SMBullet::SMBullet(const cString & Type, const cString & SubType, const cString & Name)
 	: SMEntity(Type, SubType, Name)
 	, m_FireDelay(0.0f)
+	, m_Damage(0)
 {
 
 }
@@ -39,7 +40,7 @@ void SMBullet::Initialize(const Base::cVector2 & ParentPosition, const Base::cVe
 {
 	VInitialize();
 	SetLevelPosition(ParentPosition + Direction * 25);
-	m_Speed = Direction * m_MaxSpeed;
+	m_Speed = Direction * static_cast<float>(m_MaxSpeed);
 }
 
 // *****************************************************************************
@@ -58,7 +59,12 @@ void SMBullet::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & Pene
 	{
 		VTakeDamage(m_Health);
 	}
-	else if (pEntity->GetType().CompareInsensitive("Enemy"))
+	else if (GetType().CompareInsensitive("PlayerBullet") && pEntity->GetType().CompareInsensitive("Enemy"))
+	{
+		VTakeDamage(m_Health);
+		pEntity->VTakeDamage(m_Damage);
+	}
+	else if (GetType().CompareInsensitive("EnemyBullet") && pEntity->GetType().CompareInsensitive("Player"))
 	{
 		VTakeDamage(m_Health);
 		pEntity->VTakeDamage(m_Damage);
@@ -73,8 +79,8 @@ void SMBullet::VUpdate(const float DeltaTime)
 		return;
 	}
 	cVector2 Pos = m_LevelPosition - SMGame::GetCameraPosition();
-	if (Pos.x <= 0 || Pos.x >= SMGame::GetScreenSize().x 
-		|| Pos.y <= 0 || Pos.y >= SMGame::GetScreenSize().y)
+	if (Pos.x <= 0 || Pos.x >= (SMGame::GetScreenSize().x - m_Size.x) 
+		|| Pos.y <= 0 || Pos.y >= (SMGame::GetScreenSize().y - m_Size.y))
 	{
 		SMEntityManager::EntityManager.UnRegisterEntity(this);
 	}

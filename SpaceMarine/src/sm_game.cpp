@@ -27,6 +27,7 @@ SMGame::SMGame()
 	, m_pGameTimer(NULL)
 	, m_pParamLoader(NULL)
 	, m_pBGSurface(NULL)
+	, m_pPlayer(NULL)
 {
 
 }
@@ -155,6 +156,8 @@ void SMGame::Cleanup()
 	SafeDelete(&m_pParamLoader);
 	SafeDelete(&m_pCamera);
 	SafeDelete(&m_pRandom);
+	
+	m_pPlayer = NULL;
 
 	SMEntityManager::EntityManager.Cleanup();
 	SafeFreeSurface(&m_pBGSurface);

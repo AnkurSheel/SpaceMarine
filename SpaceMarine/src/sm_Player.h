@@ -44,6 +44,7 @@ private:
 	Base::cString	m_HealthText;
 	SDL_Surface *	m_pHealthSurface;
 	static SMPlayer * m_pInstance;
+	int				m_RotationSpeed;
 };
 
 #endif // sm_Player_h__

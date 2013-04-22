@@ -20,6 +20,6 @@ public:
 	void Update();
 
 private:
-	Base::cVector2	m_Pos;
-	SMEntity *		m_pTarget;
+	Base::cVector2		m_Pos;
+	const SMEntity *	m_pTarget;
 };

@@ -21,7 +21,7 @@ SMLevel::SMLevel()
 	, m_SpawnInterval(0.0f)
 	, m_MaxEnemiesSpawned(false)
 {
-
+	m_EnemyDataList.clear();
 }
 
 // *****************************************************************************
@@ -123,7 +123,7 @@ void SMLevel::LoadStaticObjects(const IXMLFileIO * const pXMLFile)
 		if (pEntity != NULL)
 		{
 			pEntity->VInitialize();
-			pEntity->SetLevelPosition(cVector2(XPos, YPos));
+			pEntity->SetLevelPosition(cVector2(static_cast<float>(XPos), static_cast<float>(YPos)));
 		}
 	}
 }
@@ -135,7 +135,7 @@ void SMLevel::AddEnemy()
 	if(!m_MaxEnemiesSpawned)
 	{
 			SMEntityManager::EntityManager.GetEntitiesOfType("Enemy", EnemiesList);
-			if(EnemiesList.size() >= m_MaxEnemies)
+			if(EnemiesList.size() >= static_cast<unsigned int>(m_MaxEnemies))
 			{
 				Log_Write(ILogger::LT_COMMENT, 1, "Max Enemies Spawned");
 				m_MaxEnemiesSpawned = true;
@@ -167,7 +167,9 @@ void SMLevel::AddEnemy()
 		pEntity->VInitialize();
 		if(SMGame::GetRandomGenerator() != NULL)
 		{
-			pEntity->SetLevelPosition(cVector2(SMGame::GetRandomGenerator()->Random(m_LevelSize.x), SMGame::GetRandomGenerator()->Random(m_LevelSize.y)));
+			float XPos = static_cast<float>(SMGame::GetRandomGenerator()->Random(static_cast<int>(m_LevelSize.x)));
+			float YPos = static_cast<float>(SMGame::GetRandomGenerator()->Random(static_cast<int>(m_LevelSize.y)));
+			pEntity->SetLevelPosition(cVector2(XPos, YPos));
 		}
 	}
 	else

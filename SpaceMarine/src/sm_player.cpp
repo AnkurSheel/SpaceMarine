@@ -10,6 +10,8 @@
 #include "sm_crosshair.h"
 #include "sm_bullet.h"
 #include "sm_game.h"
+#include "sm_config.h"
+#include <XMLFileIO.hxx>
 
 using namespace Base;
 using namespace Utilities;
@@ -27,16 +29,17 @@ SMPlayer::SMPlayer(const cString & Type, const cString & SubType, const cString 
 	, m_Angle(0)
 	, m_bDirty(false)
 	, m_CanFire(false)
+	, m_LastFireTime(0.0f)
+	, m_RotationSpeed(0)
 {
 	m_TextColor.r = 255;
-	m_TextColor.g = 255;
-	m_TextColor.b = 255;
+	m_TextColor.g = 0;
+	m_TextColor.b = 0;
 }
 
 // *****************************************************************************
 SMPlayer::~SMPlayer()
 {
-
 }
 
 // *****************************************************************************
@@ -50,6 +53,8 @@ bool SMPlayer::VInitialize()
 	m_pFont = TTF_OpenFont(Path.GetData(), 18);
 	m_ScoreText = cString(100, "Score : %d", m_Score);
 	m_HealthText = cString(100, "Health : %d", m_Health);
+	
+	m_RotationSpeed = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "RotationSpeed");
 
 	m_pCrossHair = DEBUG_NEW SMCrosshair();
 	m_pCrossHair->Initialize(SMDirectories::Directories.GetPlayerSprites() + "crosshairs.png",
@@ -77,25 +82,25 @@ void SMPlayer::VUpdate(const float DeltaTime)
 	m_Speed = cVector2::Zero();
 	if (SMControls::Keys.IsKeyPressed(SDLK_DOWN))
 	{
-		m_Speed = m_Direction * m_MaxSpeed;
+		m_Speed = m_Direction * static_cast<float>(m_MaxSpeed);
 		m_Speed.NegTo();
 		m_bDirty = true;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_UP))
 	{
-		m_Speed = m_Direction * m_MaxSpeed;
+		m_Speed = m_Direction * static_cast<float>(m_MaxSpeed);
 		m_bDirty = true;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_RIGHT))
 	{
-		m_Angle += DegtoRad(1);
+		m_Angle += DegtoRad(m_RotationSpeed * DeltaTime);
 		ClampToTwoPi(m_Angle);
 		m_Direction = cVector2::GetDirection(m_Angle);
 		m_bDirty = true;
 	}
 	if (SMControls::Keys.IsKeyPressed(SDLK_LEFT))
 	{
-		m_Angle -= DegtoRad(1);
+		m_Angle -= DegtoRad(m_RotationSpeed * DeltaTime);
 		ClampToTwoPi(m_Angle);
 		m_Direction = cVector2::GetDirection(m_Angle);
 		m_bDirty = true;
@@ -103,7 +108,7 @@ void SMPlayer::VUpdate(const float DeltaTime)
 	if(m_CanFire && (SMControls::Keys.IsKeyPressed(SDLK_SPACE)))
 	{
 		m_CanFire = false;
-		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity("Projectile", "Bullet", "Bullet");
+		SMEntity * pEntity = SMEntityManager::EntityManager.RegisterEntity("PlayerBullet", "Bullet", "Bullet");
 		if (pEntity)
 		{
 			SMBullet * pBullet = dynamic_cast<SMBullet *>(pEntity);
@@ -143,7 +148,7 @@ void SMPlayer::VRender(SDL_Surface * pDisplaySurface)
 	}
 	if (m_pHealthSurface)
 	{
-		SMSurface::OnDraw(pDisplaySurface, m_pHealthSurface, SMGame::GetScreenSize().x - m_pHealthSurface->w, 0);
+		SMSurface::OnDraw(pDisplaySurface, m_pHealthSurface, static_cast<int>(SMGame::GetScreenSize().x) - m_pHealthSurface->w, 0);
 	}
 	
 	if (m_pCrossHair)
@@ -172,6 +177,7 @@ void SMPlayer::VCheckCollisions(const cVector2 & PredictedPos)
 	SMEntity::VCheckCollisions(PredictedPos);
 	CheckCollisionInternal("StaticObject");
 	CheckCollisionInternal("Enemy");
+	CheckCollisionInternal("EnemyBullet");
 }
 
 // *****************************************************************************

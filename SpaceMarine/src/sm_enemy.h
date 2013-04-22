@@ -8,11 +8,6 @@
 
 #include "sm_entity.h"
 
-namespace Utilities
-{
-	class IRandomGenerator;
-}
-
 class SMEnemy
 	: public SMEntity
 {
@@ -26,13 +21,16 @@ public:
 	void VCheckCollisions(const Base::cVector2 & PredictedPos);
 	bool VTakeDamage(const int Amount);
 
+protected:
+	int				m_ScoreGiven;
+	int				m_Damage;
+	Base::cVector2	m_Direction;
+
 private:
 	void GetNewDirection();
 
 private:
-	int		m_ScoreGiven;
 	float	m_ChangeDirectionTimer;
 	float	m_LastDirectionChangeTime;
-	int		m_Damage;
 };
 #endif // sm_enemy_h__

@@ -23,9 +23,7 @@ public:
 	SMEntity * RegisterEntity(const Base::cString & Type, const Base::cString & SubType,
 		const Base::cString & Name);
 	void UnRegisterEntity(SMEntity * const pEntity);
-	// *****************************************************************************
 	void RemoveDeletedEntities();
-
 	void Update(const float DeltaTime);
 	void Render(SDL_Surface * pDisplaySurface);
 	void Cleanup();

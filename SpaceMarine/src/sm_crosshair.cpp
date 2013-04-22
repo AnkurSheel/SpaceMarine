@@ -34,8 +34,8 @@ void SMCrosshair::Render(SDL_Surface * pDisplaySurface)
 {
 	if (m_pSurface)
 	{
-		SMSurface::OnDraw(pDisplaySurface, m_pSurface, m_Position.x - SMGame::GetCameraPosition().x, 
-			m_Position.y - SMGame::GetCameraPosition().y, 320, 192, 64, 64);
+		SMSurface::OnDraw(pDisplaySurface, m_pSurface, static_cast<int>(m_Position.x - SMGame::GetCameraPosition().x), 
+			static_cast<int>(m_Position.y - SMGame::GetCameraPosition().y), 320, 192, 64, 64);
 	}
 }
 

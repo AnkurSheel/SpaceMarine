@@ -46,8 +46,4 @@ bool SMDirectories::Initialize(const Base::cString & AssetsPath,
 	}
 	SafeDelete(&pXMLFile);
 	return true;
-	
-	
-
-
 }

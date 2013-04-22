@@ -14,12 +14,13 @@ SMEntityManager::SMEntityManager()
 	: m_pEntityFactory(DEBUG_NEW SMEntityFactory())
 {
 	m_EntityMap.clear();
+	m_DeletedEntities.clear();
 }
 
 // *****************************************************************************
 SMEntityManager::~SMEntityManager()
 {
-	SafeDelete(&m_pEntityFactory);
+	Cleanup();
 }
 
 // *****************************************************************************
@@ -96,6 +97,7 @@ void SMEntityManager::Render(SDL_Surface * pDisplaySurface)
 // *****************************************************************************
 void SMEntityManager::Cleanup()
 {
+	RemoveDeletedEntities();
 	SMEntityManager::EntityMap::iterator MapIter;
 	EntityList List;
 	SMEntity * pEntity;
@@ -111,6 +113,7 @@ void SMEntityManager::Cleanup()
 		}
 	}
 	m_EntityMap.clear();
+	SafeDelete(&m_pEntityFactory);
 }
 
 // *****************************************************************************

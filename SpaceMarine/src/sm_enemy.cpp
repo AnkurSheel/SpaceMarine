@@ -91,7 +91,7 @@ void SMEnemy::VCheckCollisions(const Base::cVector2 & PredictedPos)
 {
 	SMEntity::VCheckCollisions(PredictedPos);
 	CheckCollisionInternal("StaticObject");
-	CheckCollisionInternal("Bullet");
+	CheckCollisionInternal("PlayerBullet");
 	CheckCollisionInternal("Player");
 }
 
@@ -112,19 +112,21 @@ void SMEnemy::GetNewDirection()
 {
 	if (SMGame::GetRandomGenerator() != NULL)
 	{
-		cVector2 Direction(SMGame::GetRandomGenerator()->Random(), SMGame::GetRandomGenerator()->Random());
+		m_Direction.x = SMGame::GetRandomGenerator()->Random();
+		m_Direction.y = SMGame::GetRandomGenerator()->Random();
+
 		int iSpeedDirection = SMGame::GetRandomGenerator()->Random(2);
 		if (iSpeedDirection == 1)
 		{
-			Direction.x = -Direction.x;
+			m_Direction.x = -m_Direction.x;
 		}
 
 		iSpeedDirection = SMGame::GetRandomGenerator()->Random(2);
 		if (iSpeedDirection == 1)
 		{
-			Direction.y = -Direction.y;
+			m_Direction.y = -m_Direction.y;
 		}
 		m_LastDirectionChangeTime = m_ChangeDirectionTimer;
-		m_Speed = Direction * m_MaxSpeed;
+		m_Speed = m_Direction * static_cast<float>(m_MaxSpeed);
 	}
 }

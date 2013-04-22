@@ -21,6 +21,7 @@ SMEntity::SMEntity(const cString & Type, const cString & SubType, const cString 
 , m_pSurface(NULL)
 , m_pBounds(NULL)
 , m_Health(0)
+, m_MaxSpeed(0)
 {
 	SetID(m_NextValidID);
 }
@@ -157,8 +158,8 @@ bool SMEntity::Load(const cString & SpriteDirectory)
 	}
 	
 	m_MaxSpeed = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Speed");
-	m_SpritePos.x = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "XPos");
-	m_SpritePos.y = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "YPos");
+	m_SpritePos.x = static_cast<float>(SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "XPos"));
+	m_SpritePos.y = static_cast<float>(SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "YPos"));
 
 	int Width = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Width");
 	int Height = SMConfig::GetConfigLoader()->VGetNodeAttributeAsInt(m_SubType, "Height");
@@ -193,12 +194,17 @@ void SMEntity::CheckCollisionInternal(const cString & Type)
 	for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 	{
 		pEntity = *ListIter;
-		if(!GetDead() && pEntity != NULL && this != pEntity && !pEntity->GetDead() &&
+		if(pEntity != NULL && this != pEntity && !pEntity->GetDead() &&
 			SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenentrationDistance))
 		{
 			VOnCollided(pEntity, PenentrationDistance);
 			pEntity->VOnCollided(this, PenentrationDistance);
 		}
+		if(GetDead())
+		{
+			break;
+		}
+
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "sm_static_object.h"
 #include "sm_enemy.h"
 #include "sm_bullet.h"
+#include "sm_ranged_soldier.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -42,7 +43,7 @@ SMEntity * SMEntityFactory::CreateEntity(const cString & Type, const cString & S
 	}
 	else if (SubType.CompareInsensitive("rangedsoldier"))
 	{
-		return DEBUG_NEW SMEnemy(Type, SubType, Name);
+		return DEBUG_NEW SMRangedSoldier(Type, SubType, Name);
 	}
 	else if (SubType.CompareInsensitive("bullet"))
 	{
