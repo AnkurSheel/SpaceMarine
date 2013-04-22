@@ -6,6 +6,7 @@
 #include "sm_entity_manager.h"
 #include "sm_game.h"
 #include <RandomGenerator.hxx>
+#include "sm_entity_types.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -134,13 +135,13 @@ void SMLevel::AddEnemy()
 	SMEntityManager::EntityList EnemiesList;
 	if(!m_MaxEnemiesSpawned)
 	{
-			SMEntityManager::EntityManager.GetEntitiesOfType("Enemy", EnemiesList);
-			if(EnemiesList.size() >= static_cast<unsigned int>(m_MaxEnemies))
-			{
-				Log_Write(ILogger::LT_COMMENT, 1, "Max Enemies Spawned");
-				m_MaxEnemiesSpawned = true;
-				return;
-			}
+		SMEntityManager::EntityManager.GetEntitiesOfType(SMEntityTypes::Enemy, EnemiesList);
+		if(EnemiesList.size() >= static_cast<unsigned int>(m_MaxEnemies))
+		{
+			Log_Write(ILogger::LT_COMMENT, 1, "Max Enemies Spawned");
+			m_MaxEnemiesSpawned = true;
+			return;
+		}
 	}
 	SMEntity * pEntity = NULL; 
 	int Val = 0;

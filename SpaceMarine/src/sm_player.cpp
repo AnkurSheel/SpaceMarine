@@ -12,6 +12,7 @@
 #include "sm_game.h"
 #include "sm_config.h"
 #include <XMLFileIO.hxx>
+#include "sm_entity_types.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -175,16 +176,16 @@ void SMPlayer::VCleanup()
 void SMPlayer::VCheckCollisions(const cVector2 & PredictedPos)
 {
 	SMEntity::VCheckCollisions(PredictedPos);
-	CheckCollisionInternal("StaticObject");
-	CheckCollisionInternal("Enemy");
-	CheckCollisionInternal("EnemyBullet");
+	CheckCollisionInternal(SMEntityTypes::StaticObject);
+	CheckCollisionInternal(SMEntityTypes::Enemy);
+	CheckCollisionInternal(SMEntityTypes::EnemyBullet);
 }
 
 // *****************************************************************************
 void SMPlayer::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance)
 {
 	SMEntity::VOnCollided(pEntity, PenentrationDistance);
-	if (pEntity->GetType().CompareInsensitive("StaticObject"))
+	if (pEntity->GetType() == SMEntityTypes::StaticObject)
 	{
 		cVector2 PredictedPos = m_LevelPosition + PenentrationDistance;
 		SetLevelPosition(PredictedPos);
