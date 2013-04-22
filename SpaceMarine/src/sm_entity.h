@@ -7,7 +7,6 @@
 #define sm_entity_h__
 
 #include "Vector2.h"
-#include <HashedString.h>
 
 class SMBounds;
 
@@ -23,8 +22,7 @@ public:
 	virtual void VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance);
 	int GetID() const { return m_ID; }
 	Base::cString GetName() const { return m_Name; }
-	Base::cString GetType() const { return m_Type.GetString(); }
-	unsigned long GetTypeHash() const { return m_Type.GetHash(); }
+	Base::cHashedString GetType() const { return m_Type; }
 	Base::cVector2 GetPos() const { return m_LevelPosition; }
 	void SetLevelPosition(const Base::cVector2 & Pos);
 	Base::cVector2 GetSize() const { return m_Size; }
@@ -38,7 +36,7 @@ protected:
 		const Base::cString & Name);
 	bool Load(const Base::cString & SpriteDirectory);
 	virtual void VCheckCollisions(const Base::cVector2 & PredictedPos);
-	void CheckCollisionInternal(const Base::cString & Type);
+	void CheckCollisionInternal(const Base::cHashedString & Type);
 	
 protected:
 	Base::cString			m_Name;

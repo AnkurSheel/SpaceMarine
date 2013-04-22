@@ -5,6 +5,7 @@
 #include <XMLFileIO.hxx>
 #include "sm_config.h"
 #include "sm_game.h"
+#include "sm_entity_types.h"
 
 using namespace Base;
 
@@ -47,24 +48,25 @@ void SMBullet::Initialize(const Base::cVector2 & ParentPosition, const Base::cVe
 void SMBullet::VCheckCollisions(const Base::cVector2 & PredictedPos)
 {
 	SMEntity::VCheckCollisions(PredictedPos);
-	CheckCollisionInternal("StaticObject");
-	CheckCollisionInternal("Enemy");
+	CheckCollisionInternal(SMEntityTypes::StaticObject);
+	CheckCollisionInternal(SMEntityTypes::Enemy);
+	CheckCollisionInternal(SMEntityTypes::Player);
 }
 
 // *****************************************************************************
 void SMBullet::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance)
 {
 	SMEntity::VOnCollided(pEntity, PenentrationDistance);
-	if (pEntity->GetType().CompareInsensitive("StaticObject"))
+	if (pEntity->GetType() == SMEntityTypes::StaticObject)
 	{
 		VTakeDamage(m_Health);
 	}
-	else if (GetType().CompareInsensitive("PlayerBullet") && pEntity->GetType().CompareInsensitive("Enemy"))
+	else if (GetType() == SMEntityTypes::PlayerBullet && pEntity->GetType() == SMEntityTypes::Enemy)
 	{
 		VTakeDamage(m_Health);
 		pEntity->VTakeDamage(m_Damage);
 	}
-	else if (GetType().CompareInsensitive("EnemyBullet") && pEntity->GetType().CompareInsensitive("Player"))
+	else if (GetType() == SMEntityTypes::EnemyBullet && pEntity->GetType() == SMEntityTypes::Player)
 	{
 		VTakeDamage(m_Health);
 		pEntity->VTakeDamage(m_Damage);

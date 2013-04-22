@@ -8,6 +8,7 @@
 #include <XMLFileIO.hxx>
 #include <RandomGenerator.hxx>
 #include "sm_game.h"
+#include "sm_entity_types.h"
 
 using namespace Base;
 using namespace Utilities;
@@ -48,13 +49,13 @@ bool SMEnemy::VInitialize()
 void SMEnemy::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance)
 {
 	SMEntity::VOnCollided(pEntity, PenentrationDistance);
-	if (pEntity->GetType().CompareInsensitive("StaticObject"))
+	if (pEntity->GetType() == SMEntityTypes::StaticObject)
 	{
 		cVector2 PredictedPos = m_LevelPosition + PenentrationDistance;
 		SetLevelPosition(PredictedPos);
 		GetNewDirection();
 	}
-	if (pEntity->GetType().CompareInsensitive("Player"))
+	if (pEntity->GetType() == SMEntityTypes::Player)
 	{
 		VTakeDamage(m_Health);
 		pEntity->VTakeDamage(m_Damage);
@@ -90,9 +91,9 @@ void SMEnemy::VUpdate(const float DeltaTime)
 void SMEnemy::VCheckCollisions(const Base::cVector2 & PredictedPos)
 {
 	SMEntity::VCheckCollisions(PredictedPos);
-	CheckCollisionInternal("StaticObject");
-	CheckCollisionInternal("PlayerBullet");
-	CheckCollisionInternal("Player");
+	CheckCollisionInternal(SMEntityTypes::StaticObject);
+	CheckCollisionInternal(SMEntityTypes::PlayerBullet);
+	CheckCollisionInternal(SMEntityTypes::Player);
 }
 
 // *****************************************************************************

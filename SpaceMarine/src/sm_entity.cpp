@@ -184,7 +184,7 @@ bool SMEntity::Load(const cString & SpriteDirectory)
 }
 
 // *****************************************************************************
-void SMEntity::CheckCollisionInternal(const cString & Type)
+void SMEntity::CheckCollisionInternal(const cHashedString & Type)
 {
 	SMEntity * pEntity = NULL;
 	SMEntityManager::EntityList List;

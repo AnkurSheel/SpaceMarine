@@ -23,6 +23,7 @@
     <ClCompile Include="src\sm_entity.cpp" />
     <ClCompile Include="src\sm_entity_factory.cpp" />
     <ClCompile Include="src\sm_entity_manager.cpp" />
+    <ClCompile Include="src\sm_entity_type.cpp" />
     <ClCompile Include="src\sm_event.cpp" />
     <ClCompile Include="src\sm_game.cpp" />
     <ClCompile Include="src\sm_level.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="src\sm_entity.h" />
     <ClInclude Include="src\sm_entity_factory.h" />
     <ClInclude Include="src\sm_entity_manager.h" />
+    <ClInclude Include="src\sm_entity_types.h" />
     <ClInclude Include="src\sm_event.h" />
     <ClInclude Include="src\sm_game.h" />
     <ClInclude Include="src\sm_level.h" />

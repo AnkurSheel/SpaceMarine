@@ -27,7 +27,7 @@ public:
 	void Update(const float DeltaTime);
 	void Render(SDL_Surface * pDisplaySurface);
 	void Cleanup();
-	void GetEntitiesOfType(const Base::cString & strType, EntityList & entities);
+	void GetEntitiesOfType(const Base::cHashedString & Type, EntityList & entities);
 
 public:
 	static SMEntityManager	EntityManager;

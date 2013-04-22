@@ -13,6 +13,7 @@
 #include "Macros.h"
 #include "BaseUtilities.h"
 #include "NonCopyable.h"
+#include <HashedString.h>
 
 template <typename Interface>
 inline void SafeFreeSurface(Interface **ppInterfaceToFree)

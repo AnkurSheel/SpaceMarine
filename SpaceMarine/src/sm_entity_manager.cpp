@@ -35,12 +35,12 @@ SMEntity * SMEntityManager::RegisterEntity(const cString & Type, const cString &
 		{
 			Log_Write(ILogger::LT_DEBUG, 2, cString(100, "Registering Entity: %d ", pEntity->GetID()) + " Type : " + Type
 				+ " SubType : " + SubType+ " Name : " + Name);
-			EntityMap::iterator iter = m_EntityMap.find(pEntity->GetTypeHash());
+			EntityMap::iterator iter = m_EntityMap.find(pEntity->GetType().GetHash());
 			if(iter == m_EntityMap.end())
 			{
 				EntityList list;
 				list.push_back(pEntity);
-				m_EntityMap.insert(std::make_pair(pEntity->GetTypeHash(), list));
+				m_EntityMap.insert(std::make_pair(pEntity->GetType().GetHash(), list));
 			}
 			else
 			{
@@ -117,10 +117,9 @@ void SMEntityManager::Cleanup()
 }
 
 // *****************************************************************************
-void SMEntityManager::GetEntitiesOfType(const cString & Type, EntityList & Entities)
+void SMEntityManager::GetEntitiesOfType(const cHashedString & Type, EntityList & Entities)
 {
-	unsigned long hash = cHashedString::CalculateHash(Type);
-	EntityMap::iterator iter = m_EntityMap.find(hash);
+	EntityMap::iterator iter = m_EntityMap.find(Type.GetHash());
 	if(iter != m_EntityMap.end())
 	{
 		Entities = iter->second;
@@ -134,14 +133,14 @@ void SMEntityManager::RemoveDeletedEntities()
 	for(ListIter = m_DeletedEntities.begin(); ListIter != m_DeletedEntities.end(); ListIter++)
 	{
 		SMEntity * pEntity = (*ListIter);
-		EntityMap::iterator EntityIter = m_EntityMap.find(pEntity->GetTypeHash());
+		EntityMap::iterator EntityIter = m_EntityMap.find(pEntity->GetType().GetHash());
 		if (EntityIter != m_EntityMap.end())
 		{
 			EntityList & List = EntityIter->second;
 			List.remove(pEntity);
 			if(List.empty())
 			{
-				m_EntityMap.erase(pEntity->GetTypeHash());
+				m_EntityMap.erase(pEntity->GetType().GetHash());
 			}
 			SafeDelete(&pEntity);
 		}
