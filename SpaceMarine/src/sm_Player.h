@@ -24,6 +24,8 @@ public:
 	void VRender(SDL_Surface * pDisplaySurface);
 	void VOnCollided(SMEntity * const pEntity, const Base::cVector2 & PenentrationDistance);
 	static void AddScore(const int Score);
+	bool VTakeDamage(const int Amount);
+
 protected:
 	void VCheckCollisions(const Base::cVector2 & PredictedPos);
 

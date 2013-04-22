@@ -2,9 +2,10 @@
 #include "sm_level.h"
 #include "sm_directories.h"
 #include <XMLFileIO.hxx>
-#include <RandomGenerator.hxx>
 #include "sm_entity.h"
 #include "sm_entity_manager.h"
+#include "sm_game.h"
+#include <RandomGenerator.hxx>
 
 using namespace Base;
 using namespace Utilities;
@@ -13,8 +14,7 @@ SMLevel SMLevel::Level;
 
 // *****************************************************************************
 SMLevel::SMLevel()
-	: m_pRandom(NULL)
-	, m_MaxEnemies(0)
+	: m_MaxEnemies(0)
 	, m_EnemiesWeightRange(0)
 	, m_Initialized(false)
 	, m_LastSpawnTime(0.0f)
@@ -27,7 +27,6 @@ SMLevel::SMLevel()
 // *****************************************************************************
 SMLevel::~SMLevel()
 {
-	SafeDelete(&m_pRandom);
 	m_EnemyDataList.clear();
 }
 
@@ -39,7 +38,6 @@ bool SMLevel::Initialize(const cString & LevelName)
 		Log_Write(ILogger::LT_ERROR, 2, "Level Name is empty");
 		return false;
 	}
-	m_pRandom = IRandomGenerator::CreateRandomGenerator();
 	
 	int InitialEnemies = 0;
 	IXMLFileIO * pXMLFile = IXMLFileIO::CreateXMLFile();
@@ -134,18 +132,23 @@ void SMLevel::LoadStaticObjects(const IXMLFileIO * const pXMLFile)
 void SMLevel::AddEnemy()
 {
 	SMEntityManager::EntityList EnemiesList;
-	SMEntityManager::EntityManager.GetEntitiesOfType("Enemy", EnemiesList);
-	if(!m_MaxEnemiesSpawned && EnemiesList.size() >= m_MaxEnemies)
+	if(!m_MaxEnemiesSpawned)
 	{
-		Log_Write(ILogger::LT_COMMENT, 1, "Max Enemies Spawned");
-		m_MaxEnemiesSpawned = true;
-		return;
+			SMEntityManager::EntityManager.GetEntitiesOfType("Enemy", EnemiesList);
+			if(EnemiesList.size() >= m_MaxEnemies)
+			{
+				Log_Write(ILogger::LT_COMMENT, 1, "Max Enemies Spawned");
+				m_MaxEnemiesSpawned = true;
+				return;
+			}
 	}
-
 	SMEntity * pEntity = NULL; 
 	int Val = 0;
-
-	int Random = m_pRandom->Random(m_EnemiesWeightRange);
+	int Random = 0;
+	if (SMGame::GetRandomGenerator() != NULL)
+	{
+		Random = SMGame::GetRandomGenerator()->Random(m_EnemiesWeightRange);
+	}
 
 	EnemydataList::const_iterator ListIter;
 	for(ListIter = m_EnemyDataList.begin(); ListIter != m_EnemyDataList.end(); ListIter++)
@@ -162,13 +165,19 @@ void SMLevel::AddEnemy()
 	if (pEntity != NULL)
 	{
 		pEntity->VInitialize();
-		if(m_pRandom != NULL)
+		if(SMGame::GetRandomGenerator() != NULL)
 		{
-			pEntity->SetLevelPosition(cVector2(m_pRandom->Random(m_LevelSize.x), m_pRandom->Random(m_LevelSize.y)));
+			pEntity->SetLevelPosition(cVector2(SMGame::GetRandomGenerator()->Random(m_LevelSize.x), SMGame::GetRandomGenerator()->Random(m_LevelSize.y)));
 		}
 	}
 	else
 	{
 		Log_Write(ILogger::LT_WARNING, 1, cString(200, "Could not find entity Type. Random value : %d", Random));
 	}
+}
+
+// *****************************************************************************
+void SMLevel::EnemyRemoved()
+{
+	m_MaxEnemiesSpawned = false;
 }

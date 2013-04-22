@@ -59,6 +59,9 @@ bool SMPlayer::VInitialize()
 	m_bDirty = true;
 	m_CanFire = true;
 
+	m_pScoreSurface = TTF_RenderText_Solid(m_pFont, m_ScoreText.GetData(), m_TextColor);
+	m_pHealthSurface = TTF_RenderText_Solid(m_pFont, m_HealthText.GetData(), m_TextColor);
+
 	m_pInstance = this;
 	return true;
 }
@@ -134,12 +137,12 @@ void SMPlayer::VUpdate(const float DeltaTime)
 void SMPlayer::VRender(SDL_Surface * pDisplaySurface)
 {
 	SMEntity::VRender(pDisplaySurface);
-	if (m_pFont)
+	if (m_pScoreSurface)
 	{
-		m_pScoreSurface = TTF_RenderText_Solid(m_pFont, m_ScoreText.GetData(), m_TextColor);
-		m_pHealthSurface = TTF_RenderText_Solid(m_pFont, m_HealthText.GetData(), m_TextColor);
-
 		SMSurface::OnDraw(pDisplaySurface, m_pScoreSurface, 0, 0);
+	}
+	if (m_pHealthSurface)
+	{
 		SMSurface::OnDraw(pDisplaySurface, m_pHealthSurface, SMGame::GetScreenSize().x - m_pHealthSurface->w, 0);
 	}
 	
@@ -180,9 +183,6 @@ void SMPlayer::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & Pene
 		cVector2 PredictedPos = m_LevelPosition + PenentrationDistance;
 		SetLevelPosition(PredictedPos);
 	}
-	if (pEntity->GetType().CompareInsensitive("Enemy"))
-	{
-	}
 }
 
 // *****************************************************************************
@@ -192,5 +192,28 @@ void SMPlayer::AddScore(const int Score)
 	{
 		m_pInstance->m_Score += Score;
 		m_pInstance->m_ScoreText = cString(100, "Score : %d", m_pInstance->m_Score);
+		if (m_pInstance->m_pFont)
+		{
+			SafeFreeSurface(&m_pInstance->m_pScoreSurface);
+			m_pInstance->m_pScoreSurface = TTF_RenderText_Solid(m_pInstance->m_pFont, m_pInstance->m_ScoreText.GetData(), m_pInstance->m_TextColor);
+		}
 	}
+}
+
+// *****************************************************************************
+bool SMPlayer::VTakeDamage(const int Amount)
+{
+	m_Health -= Amount;
+	m_HealthText = cString(100, "Health : %d", m_Health);
+	if(m_pFont)
+	{
+		SafeFreeSurface(&m_pHealthSurface);
+		m_pHealthSurface = TTF_RenderText_Solid(m_pFont, m_HealthText.GetData(), m_TextColor);
+	}
+	if (GetDead())
+	{
+		//SMEntityManager::EntityManager.UnRegisterEntity(this);
+		SMGame::SetGameOver();
+	}
+	return GetDead();
 }

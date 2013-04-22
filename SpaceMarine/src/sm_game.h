@@ -12,6 +12,7 @@
 namespace Utilities
 {
 	class ITimer;
+	class IRandomGenerator;
 	class IParamLoader;
 }
 
@@ -38,6 +39,8 @@ public:
 	virtual void VOnKeyUp(SDLKey Sym, SDLMod Mod, Uint16 Unicode);
 	static Base::cVector2 GetScreenSize() { return m_ScreenSize; }
 	static Base::cVector2 GetCameraPosition();
+	static Utilities::IRandomGenerator * const GetRandomGenerator() { return m_pRandom; }
+	static void SetGameOver() { m_bGameOver = true; }
 
 private:
 	void SetLogOptions();
@@ -47,14 +50,16 @@ private:
 	void CreatePlayer();
 
 private:
-	bool								m_Running;
-	SDL_Surface *						m_pDisplaySurface;
-	SDL_Surface *						m_pBGSurface;
-	Utilities::ITimer *					m_pGameTimer;
-	Utilities::IParamLoader *			m_pParamLoader;
-	SMEntity *							m_pPlayer;
-	static Base::cVector2				m_ScreenSize;
-	static SMCamera *					m_pCamera;
+	bool									m_Running;
+	SDL_Surface *							m_pDisplaySurface;
+	SDL_Surface *							m_pBGSurface;
+	Utilities::ITimer *						m_pGameTimer;
+	Utilities::IParamLoader *				m_pParamLoader;
+	SMEntity *								m_pPlayer;
+	static Base::cVector2					m_ScreenSize;
+	static SMCamera *						m_pCamera;
+	static Utilities::IRandomGenerator *	m_pRandom;
+	static bool								m_bGameOver;
 };
 
 #endif // sm_game_h__

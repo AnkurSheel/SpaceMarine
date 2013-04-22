@@ -13,7 +13,6 @@
 namespace Utilities
 {
 	class IXMLFileIO;
-	class IRandomGenerator;
 	class ITimer;
 }
 
@@ -27,6 +26,7 @@ public:
 	Base::cVector2 GetPlayerSpawnPoint() const { return m_PlayerSpawnPoint; }
 	void Update(const float DeltaTime);
 	void AddEnemy();
+	void EnemyRemoved();
 
 public:
 	static SMLevel Level;
@@ -48,7 +48,6 @@ private:
 	Base::cString					m_Background;
 	Base::cVector2					m_LevelSize;
 	Base::cVector2					m_PlayerSpawnPoint;
-	Utilities::IRandomGenerator *	m_pRandom;
 	int								m_MaxEnemies;
 	int								m_EnemiesWeightRange;
 	EnemydataList					m_EnemyDataList;

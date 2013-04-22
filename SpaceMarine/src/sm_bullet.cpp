@@ -56,11 +56,11 @@ void SMBullet::VOnCollided(SMEntity * const pEntity, const Base::cVector2 & Pene
 	SMEntity::VOnCollided(pEntity, PenentrationDistance);
 	if (pEntity->GetType().CompareInsensitive("StaticObject"))
 	{
-		SMEntityManager::EntityManager.UnRegisterEntity(this);
+		VTakeDamage(m_Health);
 	}
 	else if (pEntity->GetType().CompareInsensitive("Enemy"))
 	{
-		SMEntityManager::EntityManager.UnRegisterEntity(this);
+		VTakeDamage(m_Health);
 		pEntity->VTakeDamage(m_Damage);
 	}
 }

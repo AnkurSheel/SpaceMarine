@@ -10,12 +10,15 @@
 #include "sm_level.h"
 #include "sm_camera.h"
 #include "sdl_ttf.h"
+#include <RandomGenerator.hxx>
 
 using namespace Base;
 using namespace Utilities;
 
 cVector2 SMGame::m_ScreenSize;
 SMCamera * SMGame::m_pCamera = NULL;
+IRandomGenerator * SMGame::m_pRandom = NULL;
+bool SMGame::m_bGameOver = false;
 
 // *****************************************************************************
 SMGame::SMGame()
@@ -98,6 +101,8 @@ bool SMGame::Initialize()
 	m_pGameTimer = ITimer::CreateTimer();
 	m_pGameTimer->VStartTimer();
 
+	m_pRandom = IRandomGenerator::CreateRandomGenerator();
+
 	SMLevel::Level.Initialize("level1.xml");
 
 	LoadBackGround();
@@ -114,6 +119,11 @@ bool SMGame::Initialize()
 // *****************************************************************************
 void SMGame::Update()
 {
+	if (m_bGameOver)
+	{
+		return;
+	}
+
 	if (m_pGameTimer)
 	{
 		m_pGameTimer->VOnUpdate();
@@ -144,6 +154,7 @@ void SMGame::Cleanup()
 	SafeDelete(&m_pGameTimer);
 	SafeDelete(&m_pParamLoader);
 	SafeDelete(&m_pCamera);
+	SafeDelete(&m_pRandom);
 
 	SMEntityManager::EntityManager.Cleanup();
 	SafeFreeSurface(&m_pBGSurface);

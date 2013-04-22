@@ -118,11 +118,7 @@ void SMEntityManager::GetEntitiesOfType(const cString & Type, EntityList & Entit
 {
 	unsigned long hash = cHashedString::CalculateHash(Type);
 	EntityMap::iterator iter = m_EntityMap.find(hash);
-	if(iter == m_EntityMap.end())
-	{
-		Log_Write(ILogger::LT_WARNING, 1, "No entity of type " + Type);
-	}
-	else
+	if(iter != m_EntityMap.end())
 	{
 		Entities = iter->second;
 	}

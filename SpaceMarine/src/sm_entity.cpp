@@ -193,7 +193,7 @@ void SMEntity::CheckCollisionInternal(const cString & Type)
 	for (ListIter = List.begin(); ListIter != List.end(); ListIter++)
 	{
 		pEntity = *ListIter;
-		if(pEntity != NULL && this != pEntity && !pEntity->GetDead() &&
+		if(!GetDead() && pEntity != NULL && this != pEntity && !pEntity->GetDead() &&
 			SMBounds::CheckCollision(m_pBounds, pEntity->GetBounds(), PenentrationDistance))
 		{
 			VOnCollided(pEntity, PenentrationDistance);
